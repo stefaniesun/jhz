@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>还款</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<link rel="stylesheet" href="../css/weui.min.css"/>
+	<style>
+	/**重写**/
+	.hotel-done-alert {
+			text-align: center;
+			padding: 20px;
+			font-size: 18px;
+		}
+		.hotel-done-alert i {
+			font-size: 75px;
+			color: #12b319;
+			vertical-align: middle;
+			margin-bottom: 5px;
+		}
+	.hotel-tips {
+			margin: 10px;
+			font-size: 10px;
+			background-color: #fff;
+			padding: 8px;
+			border-radius: 3px;
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">还款</h1>
+	</header>
+	<div class="mui-content">
+		
+		
+				<div>
+		
+		<!-- 	<div class="hotel-done-alert">
+				<div>还款金额</div>
+			</div> -->
+			
+
+			<div class="mui-content-padded">
+				<button id="data" type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">还款打款支付宝帐号<br><span style="font-size:25px">374935367@qq.com</span></button>
+			</div>
+			
+			<p class="hotel-tips">请尽快将还款打款到以上支付宝帐号，以免逾期产生逾期费用</p>
+		</div>
+		
+		
+	</div>
+</body>
+<script src="../js/mui_20151228.min.js"></script>
+<script type="text/javascript" src="../js/xyzCommon.js"></script>
+<script type="text/javascript">
+mui('.mui-scroll-wrapper').scroll();
+var localLoginInfo = xyz.isNull(window.localStorage.localLoginInfo)?"":JSON.parse(window.localStorage.localLoginInfo);
+if(mui.os.plus){
+	mui.plusReady(function() {
+		setTimeout(function() {
+			pageInit();
+		}, 100);
+	});
+}else{
+	mui.ready(function() {
+		pageInit();
+	});
+}
+
+/**
+ * 初始化页面信息
+ */
+function pageInit(){
+	
+}
+
+
+
+</script>
+</html>

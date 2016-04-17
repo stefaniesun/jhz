@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		
+		<mapping class="xyz.model.base.LogWork"></mapping>
+		<mapping class="xyz.model.base.PlanWork"></mapping>
+		<mapping class="xyz.model.base.PlanWorkLog"></mapping>
+		<mapping class="xyz.model.base.Possessor"></mapping>
+		<mapping class="xyz.model.base.Sms"></mapping>
+		
+		<mapping class="xyz.model.security.SecurityUser"></mapping>
+		<mapping class="xyz.model.security.SecurityApi"></mapping>
+		<mapping class="xyz.model.security.SecurityFunction"></mapping>
+		<mapping class="xyz.model.security.SecurityLogin"></mapping>
+		<mapping class="xyz.model.security.LogOper"></mapping>
+		<mapping class="xyz.model.security.SecurityPosition"></mapping>
+		<mapping class="xyz.model.security.SecurityPositionButton"></mapping>
+		
+		
+		<mapping class="xyz.model.main.Customer"></mapping>
+		<mapping class="xyz.model.main.UserTag"></mapping>
+		<mapping class="xyz.model.main.LinkMan"></mapping>
+		
+		<mapping class="xyz.model.main.BorrowOrder"></mapping>
+		<mapping class="xyz.model.main.BorrowModel"></mapping>
+		<mapping class="xyz.model.main.MoneyFlow"></mapping>
+		
+	</session-factory>
+</hibernate-configuration>
+  

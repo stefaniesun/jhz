@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="../css/mui.min.css">
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<style>
+		html,
+		body {
+			background-color: #efeff4;
+		}
+		.title {
+			padding: 5px 10px;
+			background-color: #fff;
+		}
+		.iconfont{
+			font-size:40px;
+		}
+</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+	<h1 class="mui-title">聚合者</h1>
+	</header>
+	
+	<div class="mui-content">
+	
+	<div class="mui-slider">
+  <div class="mui-slider-group mui-slider-loop">
+    <!--支持循环，需要重复图片节点-->
+    <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/ad4.jpg" /></a></div>
+    <div class="mui-slider-item"><a href="#"><img src="../images/ad1.jpg" /></a></div>
+    <div class="mui-slider-item"><a href="#"><img src="../images/ad2.jpg" /></a></div>
+    <div class="mui-slider-item"><a href="#"><img src="../images/ad3.jpg" /></a></div>
+    <div class="mui-slider-item"><a href="#"><img src="../images/ad4.jpg" /></a></div>
+    <!--支持循环，需要重复图片节点-->
+    <div class="mui-slider-item mui-slider-item-duplicate"><a href="#"><img src="../images/ad1.jpg" /></a></div>
+  </div>
+</div>
+	
+	
+	
+	<ul class="mui-table-view mui-grid-view mui-grid-9" style="margin-top:20px">
+		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="borrowLi"><a href="#">
+		                    <span class="iconfont" style="color:#00bb9c;">&#xe604;</span>
+		                    <div class="mui-media-body">借款</div></a>
+                    </li>
+                      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="borrowLi"><a href="#">
+	                    	<span class="iconfont" style="color:#eb4f38;">&#xe623;</span>
+		                    <div class="mui-media-body">还款</div></a>
+                    </li>
+                      <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="borrowLi"><a href="#">
+	                    	<span class="iconfont" style="color:#56abe4;">&#xe61c;</span>
+		                    <div class="mui-media-body">进度</div></a>
+                    </li>
+                    
+                 
+                 
+               
+		        
+		        </ul>
+	</div>
+			
+	
+	
+	<script src="../js/mui_20151228.min.js"></script>
+	<script src="../js/xyzCommon.js"></script>
+	<script>
+
+	mui.init({
+		swipeBack: false,
+	});
+	
+
+if(mui.os.plus){
+	mui.plusReady(function() {
+		setTimeout(function() {
+			pageInit();
+		}, 100);
+
+	});
+}else{
+	mui.ready(function() {
+		pageInit();
+	});
+}
+
+function pageInit(){
+	
+}
+
+/**
+ * 下拉刷新具体业务实现
+ */
+function pulldown() {
+	queryList(page=1);
+}
+var page = 0;
+/**
+ * 上拉加载具体业务实现
+ */
+function pullup() {
+	queryList(++page);
+}
+
+xyz.id("borrowLi").addEventListener('click', function() {
+	
+	var apikey = window.localStorage.apikey;
+
+	if(xyz.isNull(apikey)){
+		//跳转登录界面
+		if(window.plus){
+			plus.webview.getWebviewById('page/login.html').show("slide-in-right", 300);
+		}
+		return ;
+	}
+	
+	mui.openWindow({
+		id: 'page/borrow.html',
+		url: xyz.setUrlparam(xyz.getFullurl('page/borrow.html')),
+		styles: {
+			popGesture: "close"//启用侧滑关闭
+		},
+		show: {
+			aniShow: 'slide-in-right'//采用从右边滑入的动画效果
+		},
+		waiting: {
+			autoShow: true,//自动显示等待框
+			title:'加载中...'//等待框标题
+		}
+	});
+});
+		
+
+		
+//主列表触摸事件
+mui('#tableList').on('tap', 'li', function() {
+	var urlTarget = 'page/providerScenicDetail.html';
+	if(this.type=="HO"){//酒店
+		urlTarget = 'page/providerHotelDetail.html';
+	}else if(this.type=="SC"){//门票
+		urlTarget = 'page/providerScenicDetail.html';
+	}
+	 mui.openWindow({
+		id: urlTarget,
+		url: xyz.setUrlparam(xyz.getFullurl(urlTarget), {'numberCode':this.id}),
+		styles: {
+			popGesture: "close"//启用侧滑关闭
+		},
+		show: {
+			aniShow: 'slide-in-right'//采用从右边滑入的动画效果
+		},
+		waiting: {
+			autoShow: true,//自动显示等待框
+			title:'加载中...'//等待框标题
+		}
+	}); 
+});
+	</script>
+</body>
+</html>

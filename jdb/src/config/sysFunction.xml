@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	
+	<function isApi="0" groupCn="管理员" numberCode="a_userManager" nameCn="用户管理" url="/xyzsecurity/a_userManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20151214155700" nameCn="查询用户列表" url="/AdminUserWS/queryUserList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155701" nameCn="新增用户" url="/AdminUserWS/addUser.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155702" nameCn="编辑用户" url="/AdminUserWS/editUser.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155703" nameCn="删除用户" url="/AdminUserWS/deleteUser.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155704" nameCn="重设密码" url="/AdminUserWS/editUserPassword.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155705" nameCn="开关用户" url="/AdminUserWS/editUserEnabled.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155706" nameCn="设置用户岗位" url="/AdminUserWS/setUserPosition.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155707" nameCn="设置用户令牌" url="/AdminUserWS/setUserOtp.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20151214155708" nameCn="获取岗位" url="/AdminUserWS/getAllPosition.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20151214155709" nameCn="给用户设置资源组" url="/AdminUserWS/setUserPossessor.do"/>
+	</function>
+	
+	<function isApi="0" groupCn="管理员" numberCode="positionManager" nameCn="岗位管理" url="/xyzsecurity/a_positionManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20141231101619" nameCn="查询岗位列表" url="/AdminPositionWS/queryPositionList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="新增岗位" url="/AdminPositionWS/addPosition.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="编辑岗位" url="/AdminPositionWS/editPosition.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="删除岗位" url="/AdminPositionWS/deletePosition.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20141231101619" nameCn="查询岗位内功能" url="/AdminPositionWS/queryPositionFunctionTrueList.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20141231101619" nameCn="查询岗位外功能" url="/AdminPositionWS/queryPositionFunctionFalseList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="添加功能进岗位" url="/AdminPositionWS/addPositionFunction.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="删除岗位内功能" url="/AdminPositionWS/deletePositionFunction.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20141231101619" nameCn="查询岗位内操作" url="/AdminPositionWS/queryPositionButtonTrueList.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20141231101619" nameCn="查询岗位外操作" url="/AdminPositionWS/queryPositionButtonFalseList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="添加操作进岗位" url="/AdminPositionWS/addPositionButton.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20141231101619" nameCn="删除岗位内操作" url="/AdminPositionWS/deletePositionButton.do"/>
+	</function>
+
+	
+	<function isApi="0" groupCn="订单" numberCode="borrowOrderManager" nameCn="借款申请" url="/jsp_order/borrowOrderManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160412000300" nameCn="借款申请查询" url="/BorrowOrderWS/queryBorrowOrderList.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160412000301" nameCn="借款流水查询" url="/BorrowOrderWS/queryMoneyFlowList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000302" nameCn="手续费收款确认" url="/BorrowOrderWS/chargeConfirmOper.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000303" nameCn="借款放款确认" url="/BorrowOrderWS/loanConfirmOper.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000304" nameCn="借款还款确认" url="/BorrowOrderWS/backConfirmOper.do"/>
+		
+		
+	</function>
+
+	<function isApi="0" groupCn="配置" numberCode="borrowModelManager" nameCn="借款模型" url="/jsp_config/borrowModelManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160410110900" nameCn="借款模型查询" url="/BorrowModelWS/queryBorrowModelList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110901" nameCn="借款模型新增" url="/BorrowModelWS/addBorrowModel.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110902" nameCn="借款模型修改" url="/BorrowModelWS/editBorrowModel.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110903" nameCn="删除借款模型" url="/BorrowModelWS/deleteBorrowModel.do"/>
+	</function>
+	
+	<function isApi="0" groupCn="用户" numberCode="customerManager" nameCn="客户管理" url="/jsp_customer/customerManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20151231115900" nameCn="客户查询" url="/CustomerWS/queryCustomerList.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160411234800" nameCn="设置客户等级" url="/CustomerWS/editUserTag.do"/>
+		
+		
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20151231115901" nameCn="修改客户信息" url="/CustomerWS/editCustomer.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160216100200" nameCn="重置客户密码" url="/CustomerWS/editCustomerPassword.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160216102000" nameCn="获取客户详细信息" url="/CustomerWS/getCustomer.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20151231115902" nameCn="客户账户状态" url="/CustomerWS/editCustomerEnabled.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101901" nameCn="设置客户标签" url="/CustomerWS/setCustomerUserTag.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20160317101902" nameCn="查询客户选中的标签" url="/CustomerWS/queryCustomerUserTagTrueList.do"/>
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20160317101903" nameCn="查询客户位选中标签" url="/CustomerWS/queryCustomerUserTagFalseList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101904" nameCn="添加标签进组" url="/CustomerWS/addCustomerUserTag.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101905" nameCn="删除组内标签" url="/CustomerWS/deleteCustomerUserTag.do"/>
+	</function>
+	
+	<function isApi="0" groupCn="用户" numberCode="customerUserTagManager" nameCn="客户标签等级" url="/jsp_customer/userTagManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_y20160315110900" nameCn="客户标签" url="/UserTagWS/queryUserTagList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20160315111001" nameCn="添加标签" url="/UserTagWS/addUserTag.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20160315111102" nameCn="编辑标签" url="/UserTagWS/editUserTag.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_y20160315111103" nameCn="删除标签" url="/UserTagWS/deleteUserTag.do"/>
+	</function>
+	
+	
+	
+	<function isApi="0" groupCn="异常" numberCode="exceptionLogManager" nameCn="异常监控" url="/jsp_base/exceptionLogManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160314104000" nameCn="查询异常信息" url="/ExceptionLogWS/queryExceptionLogList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160314104001" nameCn="新增异常信息" url="/ExceptionLogWS/addExceptionLog.do"/>
+	</function>
+	
+	<list>
+		<api flagServer="0" isWork="0" nameCn="下拉框--获取指定供应商" url="/ListWS/getProviderList.do"/>
+		<api flagServer="0" isWork="0" nameCn="下拉框--获取指定供应商" url="/ListWS/getUserTagList.do"/>
+		<api flagServer="0" isWork="0" nameCn="下拉框--获取用户标签列表" url="/ListWS/getProductUserTagList.do"/>
+		<api flagServer="0" isWork="0" nameCn="下拉框--获取PMS酒店列表" url="/ListWS/getPmsHotelList.do"/>
+		<api flagServer="0" isWork="0" nameCn="下拉框--根据PMS酒店获取房间类型列表" url="/ListWS/getPmsRoomTypeList.do"/>
+	</list>
+
+	<list>
+		<api flagServer="0" isWork="1" nameCn="安全退出" url="/LoginWS/safeQuit.do"/>
+		<api flagServer="0" isWork="1" nameCn="登录验证" url="/LoginWS/decideLogin.do"/>
+		<api flagServer="0" isWork="1" nameCn="修改密码" url="/LoginWS/alterPassword.do"/>
+	</list>
+	
+
+	
+</root>

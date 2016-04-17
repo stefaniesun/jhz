@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>资料完善</title>
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<style>
+		h5 {
+			padding: 8px;
+		}
+		
+		.mui-content {
+			padding-bottom: 44px;
+		}
+		
+		.mui-table-view {
+			margin-bottom: 20px;
+		}
+		
+		.mui-table-view-cell .hotel-right-text {
+			position: absolute;
+			font-size: 14px;
+			height: 16px;
+			line-height: 16px;
+			right: 40px;
+			top: 50%;
+			margin-top: -8px;
+		}
+		
+		.mui-input-row>label {
+			padding: 0px 15px;
+			line-height: 40px;
+		}
+		
+		.mui-input-row>input {
+			font-size: 14px;
+		}
+		
+		.hotel-tips {
+			margin: 10px;
+			font-size: 10px;
+			background-color: #fff;
+			padding: 8px;
+			border-radius: 3px;
+		}
+		
+		.hotel-bar-submit {
+			position: fixed;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			background: #FF9913;
+			height: 44px;
+			line-height: 44px;
+			padding: 0px 140px 0px 15px;
+			color: #fff;
+			font-size: 16px;
+		}
+		
+		.hotel-submit-btn {
+			position: absolute;
+			width: 80px;
+			background-color: #ff7d13;
+			text-align: center;
+			right: 0px;
+			color: #fff;
+		}
+		
+		.hotel-pay-detail {
+			position: absolute;
+			width: 60px;
+			text-align: center;
+			right: 80px;
+			color: #fff;
+		}
+		
+		.hotel-pay-detail .mui-icon {
+			font-size: 18px;
+			line-height: 44px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">资料完善</h1>
+	</header>
+	<div class="mui-content">
+		
+			<h5>紧急联系人1</h5>
+			<ul class="mui-table-view mui-input-group">
+			<li class="mui-input-row">
+				<label>姓名</label>
+				<input id='name1' type="text" class="mui-input-clear mui-input" placeholder="">
+			</li>
+			<li class="mui-input-row">
+				<label>电话</label>
+				<input id='phone1' type="tel" class="mui-input-clear mui-input" placeholder="">
+			</li>
+			<li class="mui-input-row mui-table-view-cell" id="relation1">
+				<a class="mui-navigate-right">
+						关系
+						<span class="hotel-right-text" id="relationText1"></span>
+				</a>
+			</li>
+		</ul>
+		
+		
+		<h5>紧急联系人2</h5>
+			<ul class="mui-table-view mui-input-group">
+			<li class="mui-input-row">
+				<label>姓名</label>
+				<input id='name2' type="text" class="mui-input-clear mui-input" placeholder="">
+			</li>
+			<li class="mui-input-row">
+				<label>电话</label>
+				<input id='phone2' type="tel" class="mui-input-clear mui-input" placeholder="">
+			</li>
+			<li class="mui-input-row mui-table-view-cell" id="relation2">
+				<a class="mui-navigate-right">
+						关系
+						<span class="hotel-right-text" id="relationText2"></span>
+				</a>
+			</li>
+		</ul>
+		
+		
+		<div class="mui-content-padded">
+				<button id="dataSave" type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">保存</button>
+			</div>
+		
+	</div>
+	<script src="../js/mui_20151228.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.md5.js"></script>
+	<script type="text/javascript" src="../js/xyzCommon.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script type="text/javascript">
+	mui.init();
+	
+	mui.plusReady(function(){
+		//仅支持竖屏显示
+		plus.screen.lockOrientation("portrait-primary");
+	});
+	
+	xyz.id('relation1').addEventListener('tap', function() {
+		var relation1=new mui.PopPicker();
+		relation1.setData([{
+			value: '父亲',
+			text: '父亲'
+		},  {
+			value: '母亲', 
+			text: '母亲'
+		}]);
+		relation1.show(function(items) {
+			console.log(items);
+			xyz.id('relationText1').innerText = items[0].value;
+		});
+	});
+	
+	xyz.id('relation2').addEventListener('tap', function() {
+		var relation2=new mui.PopPicker();
+		relation2.setData([{
+			value: '亲戚',
+			text: '亲戚'
+		},{
+			value: '朋友', 
+			text: '朋友'
+		},{
+			value: '同学', 
+			text: '同学'
+		}]); 
+		relation2.show(function(items) {
+			xyz.id('relationText2').innerText = items[0].value;
+		});
+	});
+	
+	
+	xyz.id('dataSave').addEventListener('click', function() {
+		var name1=xyz.id("name1").value;
+		var phone1=xyz.id("phone1").value;
+		var type1=xyz.id("relationText1").innerText;
+		var name2=xyz.id("name2").value;
+		var phone2=xyz.id("phone2").value;
+		var type2=xyz.id("relationText2").innerText;
+		
+		if(xyz.isNull(name1)||xyz.isNull(name2)){
+			plus.nativeUI.alert('姓名不能为空');
+			return;
+		}
+		if(xyz.isNull(phone1)||xyz.isNull(phone2)){
+			plus.nativeUI.alert('电话不能为空');
+			return;
+		}
+		if(xyz.isNull(type1)||xyz.isNull(type2)){
+			plus.nativeUI.alert('请选择联系人关系');
+			return;
+		}
+		
+		xyz.ajax({
+			url:'LinkManWS/editLinkManInfo.cus',
+			data:{
+				apikey:window.localStorage.apikey,
+				name1:name1,
+				phone1:phone1,
+				type1:type1,
+				name2:name2,
+				phone2:phone2,
+				type2:type2
+			},
+			success:function(data){
+				if(data.status==1){
+					if(window.plus){
+						plus.webview.getWebviewById('page/orderDetail.html').evalJS('pageInit()');
+					}
+					mui.toast('保存成功');
+					mui.back();
+				}else{
+					if(data.msg.indexOf('重新登录')>-1){
+						if(window.plus){
+							var loginWebview = plus.webview.getWebviewById('page/login.html');
+							loginWebview.evalJS('webviewId="";method=""');
+							loginWebview.show("slide-in-right", 300);
+						}
+					}else{
+						plus.nativeUI.alert(data.msg);
+					}
+				}
+			}
+		});
+		
+		
+	});
+	
+
+	</script>
+</body>
+</html>

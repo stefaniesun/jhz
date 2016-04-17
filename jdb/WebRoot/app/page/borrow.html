@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>资料完善</title>
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<style>
+		h5 {
+			padding: 8px;
+		}
+		.mui-content {
+			font-family: "Helvetica Neue",\5FAE\8F6F\96C5\9ED1,Tohoma;
+			padding-bottom: 44px;
+		}
+		ul, li {
+  			list-style-type: none;
+		}
+		.borrow ul {
+  			padding: 5px 12px;
+		}
+		.borrow ul li {
+			  padding: 7px 10px;
+			  margin-top: 15px;
+			  background: #fff;
+			  border-radius: 5px;
+			  height: 50px;
+			  line-height: 36px;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  line-height: 36px;
+		}
+		.borrow ul li .label {
+			  border-right: 1px solid #e8e8e8;
+			  width: 90px;
+			  color: #333;
+			  padding-right: 15px;
+		}
+		input, select {
+			  -webkit-user-modify: read-write-plaintext-only;
+			  -webkit-tap-highlight-color: rgba(0,0,0,0);
+			  -webkit-appearance: none;
+			  white-space: pre;
+		}
+		.borrow input[type=number], .borrow input[type=text], .borrow input[type=tel], .borrow select {
+			  appearance: none;
+			  -webkit-appearance: none;
+			  -moz-appearance: none;
+			  -ms-appearance: none;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  -moz-box-sizing: border-box;
+			  border: 0;
+			  background: 0;
+			  border-radius: 5px;
+			  box-shadow: none;
+			  -webkit-box-shadow: none;
+			  display: block;
+			  margin: 0;
+			  padding-left: 10px;
+			  width: 100%;
+			  height: 40px;
+			  vertical-align: middle;
+			}
+			.ub-f1 {
+			  flex: 1;
+			  -webkit-flex: 1;
+			  box-flex: 1;
+			  -webkit-box-flex: 1;
+			}
+			.ubox {
+				  display: -webkit-box;
+				  display: box;
+				  display: -webkit-flex;
+			}
+			.hotel-tips {
+			margin: 10px;
+			font-size: 20px;
+			background-color: #fff;
+			padding: 8px;
+			border-radius: 3px;
+			text-align:center;
+		}
+		.borrow .DivSelect {
+			  background: transparent url(../images/down.png) no-repeat right 15px;
+			  background-size: 18px 10px;
+			  overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">借款</h1>
+	</header>
+	<div class="mui-content borrow">
+		
+		<p class="hotel-tips">当前可借额度<span style="color:#f0ad4e">2000</span>元</p>
+		
+		
+		<ul>
+				<li>
+                    <div class="ubox">
+                        <div class="label">借款金额</div>
+                        <div class="ubox ub-f1 DivSelect"><input  readonly="readonly"  id="borrowAmount" placeholder="请选择借款金额" type="text"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">还款日期</div>
+                        <div class="ubox ub-f1 DivSelect"><input readonly="readonly"  id="returnDate" placeholder="请选择还款日期" type="text"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">手续费</div>
+                        <div class="ubox ub-f1"><input readonly="readonly"  id="totalAmount" placeholder="借款手续费用" type="text"></div>
+                    </div>
+                </li>
+		</ul>
+		
+		
+		<div class="mui-content-padded">
+				<button id="borrowSave" type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">提交</button>
+			</div>
+		
+	</div>
+	<script src="../js/mui_20151228.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.md5.js"></script>
+	<script type="text/javascript" src="../js/xyzCommon.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script type="text/javascript">
+	mui.init();
+	
+	mui.plusReady(function(){
+		//仅支持竖屏显示
+		plus.screen.lockOrientation("portrait-primary");
+	});
+	
+	
+	var rows;
+	xyz.ajax({
+		url:'BorrowModelWS/getAllBorrowModel.cus',
+		data:{
+			apikey:window.localStorage.apikey
+		},
+		success:function(data){
+			if(data.status==1){
+				rows=data.content;
+			}else{
+				if(data.msg.indexOf('重新登录')>-1){
+					if(window.plus){
+						var loginWebview = plus.webview.getWebviewById('page/login.html');
+						loginWebview.evalJS('webviewId="";method=""');
+						loginWebview.show("slide-in-right", 300);
+					}
+				}else{
+					plus.nativeUI.alert(data.msg);
+				}
+			}
+		}
+	});
+
+	
+
+	
+	xyz.id('borrowAmount').addEventListener('tap', function() {
+		
+		var borrowAmount=new mui.PopPicker();
+		var datas="[";
+		for(var i=0;i<rows.length;i++){
+			datas+="{'value':'"+rows[i].numberCode+"-"+rows[i].baseAmount+"','text':'"+rows[i].amount+"'},"
+		}
+		datas=datas.substring(0,datas.length-1);
+		datas+="]";
+		borrowAmount.setData(eval ("(" + datas + ")"));
+		borrowAmount.show(function(items) {
+			xyz.id('borrowAmount').value = items[0].text;
+			var arr=items[0].value.split("-");
+			xyz.id('borrowAmount').setAttribute ( 'data-borrowModel' , arr[0] ) ;
+			xyz.id('borrowAmount').setAttribute ( 'data-baseAmount' , arr[1] ) ;
+			charging();
+		});
+		
+
+	});
+	
+	
+	xyz.id('returnDate').addEventListener('tap', function() {
+		var today=new Date();
+		var returnDate1=new Date((today/1000+691200)*1000).Format("yyyy-MM-dd");  
+		var returnDate2=new Date((today/1000+1296000)*1000).Format("yyyy-MM-dd");  
+		
+		
+		var returnDate=new mui.PopPicker();
+		var datas="[{'value':'"+returnDate1+",1','text':'一期  "+returnDate1+"'},{'value':'"+returnDate2+",2','text':'二期  "+returnDate2+"'}]";
+		returnDate.setData(eval ("(" + datas + ")"));
+		returnDate.show(function(items) {
+			var arr= items[0].value.split(",");
+			xyz.id('returnDate').setAttribute ( 'data-cycle' , arr[1] ) ;
+			xyz.id('returnDate').value = arr[0];
+			charging();
+		});
+	});
+	
+	xyz.id('borrowSave').addEventListener('tap', function() {
+		var borrowModel=xyz.id('borrowAmount').getAttribute ( 'data-borrowModel') ;
+		var cycle=xyz.id('returnDate').getAttribute ( 'data-cycle') ;
+		
+		if(xyz.isNull(borrowModel)){
+			plus.nativeUI.alert('请选择借款金额');
+			return;
+		}
+		
+		if(xyz.isNull(cycle)){
+			plus.nativeUI.alert('请选择还款时间');
+			return;
+		}
+		
+		xyz.ajax({
+			url:'BorrowOrderWS/addBorrowOrder.cus',
+			data:{
+				apikey:window.localStorage.apikey,
+				borrowModel:borrowModel,
+				cycle:cycle
+			},
+			success:function(data){
+				if(data.status==1){
+					mui.back();
+					
+					mui.openWindow({
+						id: 'page/borrowSuccess.html',
+						url: xyz.setUrlparam(xyz.getFullurl('page/borrowSuccess.html')),
+						styles: {
+							popGesture: "close"//启用侧滑关闭
+						},
+						show: {
+							aniShow: 'slide-in-right'//采用从右边滑入的动画效果
+						},
+						waiting: {
+							autoShow: true,//自动显示等待框
+							title:'加载中...'//等待框标题
+						}
+					});
+					
+				
+				}else{
+					if(data.msg.indexOf('重新登录')>-1){
+						if(window.plus){
+							var loginWebview = plus.webview.getWebviewById('page/login.html');
+							loginWebview.evalJS('webviewId="";method=""');
+							loginWebview.show("slide-in-right", 300);
+						}
+					}else{
+						plus.nativeUI.alert(data.msg);
+					}
+				}
+			}
+		});
+		
+		
+	});
+	
+	
+	function charging(){
+		var borrowModel=xyz.id('borrowAmount').getAttribute ( 'data-baseAmount') ;
+		var cycle=xyz.id('returnDate').getAttribute ( 'data-cycle') ;
+		if(!xyz.isNull(borrowModel)&&!xyz.isNull(cycle)){
+			xyz.id("totalAmount").value=borrowModel*cycle;
+		}
+	}
+	
+
+	</script>
+</body>
+</html>

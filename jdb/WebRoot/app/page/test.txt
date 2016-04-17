@@ -1,0 +1,22 @@
+xyz.ajax({
+		url:'LinkManWS/getLinkManInfo.cus',
+		data:{
+			apikey:window.localStorage.apikey
+		},
+		success:function(data){
+			if(data.status==1){
+				mui.toast('保存成功');
+				mui.back();
+			}else{
+				if(data.msg.indexOf('重新登录')>-1){
+					if(window.plus){
+						var loginWebview = plus.webview.getWebviewById('page/login.html');
+						loginWebview.evalJS('webviewId="";method=""');
+						loginWebview.show("slide-in-right", 300);
+					}
+				}else{
+					plus.nativeUI.alert(data.msg);
+				}
+			}
+		}
+	});

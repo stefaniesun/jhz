@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>资料完善</title>
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<style>
+		h5 {
+			padding: 8px;
+		}
+		.mui-content {
+			font-family: "Helvetica Neue",\5FAE\8F6F\96C5\9ED1,Tohoma;
+			padding-bottom: 44px;
+		}
+		ul, li {
+  			list-style-type: none;
+		}
+		.borrow ul {
+  			padding: 0px 12px;
+		}
+		.borrow ul li {
+			  padding: 7px 10px;
+			  margin-top: 15px;
+			  background: #fff;
+			  border-radius: 5px;
+			  height: 50px;
+			  line-height: 36px;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  line-height: 36px;
+		}
+		.borrow ul li .label {
+			  border-right: 1px solid #e8e8e8;
+			  width: 90px;
+			  color: #333;
+			  padding-right: 15px;
+		}
+		input, select {
+			  -webkit-user-modify: read-write-plaintext-only;
+			  -webkit-tap-highlight-color: rgba(0,0,0,0);
+			  -webkit-appearance: none;
+			  white-space: pre;
+		}
+		.borrow input[type=number], .borrow input[type=text], .borrow input[type=tel], .borrow select {
+			  appearance: none;
+			  -webkit-appearance: none;
+			  -moz-appearance: none;
+			  -ms-appearance: none;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  -moz-box-sizing: border-box;
+			  border: 0;
+			  background: 0;
+			  border-radius: 5px;
+			  box-shadow: none;
+			  -webkit-box-shadow: none;
+			  display: block;
+			  margin: 0;
+			  padding-left: 10px;
+			  width: 100%;
+			  height: 40px;
+			  vertical-align: middle;
+			}
+			.ub-f1 {
+			  flex: 1;
+			  -webkit-flex: 1;
+			  box-flex: 1;
+			  -webkit-box-flex: 1;
+			}
+			.ubox {
+				  display: -webkit-box;
+				  display: box;
+				  display: -webkit-flex;
+			}
+			.hotel-tips {
+			margin: 10px;
+			font-size: 20px;
+			background-color: #fff;
+			padding: 8px;
+			border-radius: 3px;
+			text-align:center;
+		}
+		.borrow .DivSelect {
+			  background: transparent url(../images/down.png) no-repeat right 15px;
+			  background-size: 18px 10px;
+			  overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">紧急联系人信息</h1>
+	</header>
+	<div class="mui-content borrow">
+		
+		<p class="hotel-tips">紧急联系人1</p>
+		<ul>
+				<li>
+                    <div class="ubox">
+                        <div class="label">姓名</div>
+                        <div class="ubox ub-f1"><input id="name1" placeholder="请输入真实姓名" type="text"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">联系电话</div>
+                        <div class="ubox ub-f1"><input  id="phone1" placeholder="联系人手机" type="tel"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">关系</div>
+                        <div class="ubox ub-f1 DivSelect"><input readonly="readonly"  id="relation1" placeholder="与您的关系" type="text"></div>
+                    </div>
+                </li>
+		</ul>
+		
+		
+		<p class="hotel-tips">紧急联系人2</p>
+		<ul>
+				<li>
+                    <div class="ubox">
+                        <div class="label">姓名</div>
+                        <div class="ubox ub-f1"><input id="name2" placeholder="请输入真实姓名" type="text"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">联系电话</div>
+                        <div class="ubox ub-f1"><input  id="phone2" placeholder="联系人手机" type="tel"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="ubox">
+                        <div class="label">关系</div>
+                        <div class="ubox ub-f1 DivSelect"><input readonly="readonly"  id="relation2" placeholder="与您的关系" type="text"></div>
+                    </div>
+                </li>
+		</ul>
+		
+		
+		<div class="mui-content-padded">
+				<button id=save type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">提交</button>
+			</div>
+		
+	</div>
+	<script src="../js/mui_20151228.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.md5.js"></script>
+	<script type="text/javascript" src="../js/xyzCommon.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script type="text/javascript">
+	mui.init();
+	
+	mui.plusReady(function(){
+		//仅支持竖屏显示
+		plus.screen.lockOrientation("portrait-primary");
+	});
+	
+	
+	xyz.ajax({
+		url:'LinkManWS/getLinkManInfo.cus',
+		data:{
+			apikey:window.localStorage.apikey
+		},
+		success:function(data){
+			if(data.status==1){
+				data=data.content;
+				if(!xyz.isNull(data.linkmanName1)){
+					xyz.id("name1").value=data.linkmanName1;
+				}
+				if(!xyz.isNull(data.linkmanName2)){
+					xyz.id("name2").value=data.linkmanName2;
+				}
+				if(!xyz.isNull(data.linkmanPhone1)){
+					xyz.id("phone1").value=data.linkmanPhone1;
+				}
+				if(!xyz.isNull(data.linkmanPhone2)){
+					xyz.id("phone2").value=data.linkmanPhone2;
+				}
+				if(!xyz.isNull(data.linkmanType1)){
+					xyz.id("relation1").value=data.linkmanType1;
+				}
+				if(!xyz.isNull(data.linkmanType2)){
+					xyz.id("relation2").value=data.linkmanType2;
+				}
+				
+			}else{
+				if(data.msg.indexOf('重新登录')>-1){
+					if(window.plus){
+						var loginWebview = plus.webview.getWebviewById('page/login.html');
+						loginWebview.evalJS('webviewId="";method=""');
+						loginWebview.show("slide-in-right", 300);
+					}
+				}else{
+					plus.nativeUI.alert(data.msg);
+				}
+			}
+		}
+	});
+	
+
+	
+	xyz.id('relation1').addEventListener('tap', function() {
+		var relation1=new mui.PopPicker();
+		var datas="[{'value':'父亲','text':'父亲'},{'value':'母亲','text':'母亲'}]";
+		relation1.setData(eval ("(" + datas + ")"));
+		relation1.show(function(items) {
+			xyz.id('relation1').value = items[0].text;
+		});
+	});
+	
+	
+	xyz.id('relation2').addEventListener('tap', function() {
+		var relation2=new mui.PopPicker();
+		var datas="[{'value':'朋友','text':'朋友'},{'value':'亲戚','text':'亲戚'},{'value':'同学','text':'同学'}]";
+		relation2.setData(eval ("(" + datas + ")"));
+		relation2.show(function(items) {
+			xyz.id('relation2').value = items[0].text;
+		});
+	});
+	
+
+	
+	xyz.id('save').addEventListener('click', function() {
+		
+		var name1=xyz.id("name1").value;
+		var name2=xyz.id("name2").value;
+		var phone1=xyz.id("phone1").value;
+		var phone2=xyz.id("phone2").value;
+		var relation1=xyz.id("relation1").value;
+		var relation2=xyz.id("relation2").value;
+		
+		if(xyz.isNull(name1)||xyz.isNull(name2)){
+			plus.nativeUI.alert('请输入联系人姓名');
+			return;
+		}
+		if(xyz.isNull(phone1)||xyz.isNull(phone2)){
+			plus.nativeUI.alert('请输入联系人联系电话');
+			return;
+		}
+		if(xyz.isNull(relation1)||xyz.isNull(relation2)){
+			plus.nativeUI.alert('请选择联系人关系');
+			return;
+		}
+		
+		xyz.ajax({
+			url:'LinkManWS/editLinkManInfo.cus',
+			data:{
+				apikey:window.localStorage.apikey,
+				name1:name1,
+				phone1:phone1,
+				type1:relation1,
+				name2:name2,
+				phone2:phone2,
+				type2:relation2
+			},
+			success:function(data){
+				if(data.status==1){
+					mui.toast('保存成功');
+					mui.back();
+				}else{
+					if(data.msg.indexOf('重新登录')>-1){
+						if(window.plus){
+							var loginWebview = plus.webview.getWebviewById('page/login.html');
+							loginWebview.evalJS('webviewId="";method=""');
+							loginWebview.show("slide-in-right", 300);
+						}
+					}else{
+						plus.nativeUI.alert(data.msg);
+					}
+				}
+			}
+		});
+		
+		
+	});
+	
+	
+	
+
+	</script>
+</body>
+</html>
