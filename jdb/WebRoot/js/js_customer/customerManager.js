@@ -41,6 +41,7 @@ function initTable(){
 		    {field:'checkboxTemp',checkbox:true},
 			{field:'username',title:'帐号',width:100},
 			{field:'nickName',title:'昵称',width:100},
+			{field:'account',title:'支付宝帐号',width:100},
 			{field:'enabled',title:'账户状态',
 				formatter : function(value,row,index){
 					if(value == 1){
@@ -62,16 +63,36 @@ function initTable(){
 					return "<a href='javascript:void(0);' onclick='setCustomerUserTag(\""+row.username+"\")'>设置</a>";
 				}
 			},
-			{field:'operTemp1',title:'操作',
+			{field:'operTemp1',title:'开关',
+				formatter: function(value,row,index){
+					if(row.enabled==1){
+						return "<a href='javascript:void(0);' onclick='editCustomerEnabled(\""+row.iidd+"\",\""+0+"\")'>关闭</a>";
+					}else{
+						return "<a href='javascript:void(0);' onclick='editCustomerEnabled(\""+row.iidd+"\",\""+1+"\")'>启用</a>";
+					}
+				}
+			},
+			{field:'operTemp2',title:'操作',
 				formatter: function(value,row,index){
 						var btn1 = "<a href='javascript:void(0);' onclick='setCustomerUserTag(\""+row.iidd+"\")'>标签设置</a>";
 						return btn1;
 				}
 			},
-			{field:'phone',title:'联系电话'},
-			{field:'email',title:'邮箱'},
-			{field:'linkman',title:'联系人'},
-			{field:'linkPhone',title:'联系人电话'},
+			{field:'card1Image',title:'身份证正面照',
+				formatter: function(value,row,index){
+					return "<a href='javascript:void(0);' onclick='window.open(\"../upload/image/"+row.card1Image+"\")'>查看</a>";
+				}	
+			},
+			{field:'card2Image',title:'身份证反面照',
+				formatter: function(value,row,index){
+					return "<a href='javascript:void(0);' onclick='window.open(\"../upload/image/"+row.card2Image+"\")'>查看</a>";
+				}	
+			},
+			{field:'card3Image',title:'学生证正面照',
+				formatter: function(value,row,index){
+					return "<a href='javascript:void(0);' onclick='window.open(\"../upload/image/"+row.card3Image+"\")'>查看</a>";
+				}	
+			},
 			{field:'addDate',title:'添加时间'}
 		]]
 	});
@@ -117,14 +138,14 @@ function editCustomerButton(title){
 	xyzdialog({
 		dialog : 'dialogFormDiv_editCustomer',
 		title : title,
-	    href : '../jsp_buyer/editCustomer.html',
+	    href : '../jsp_customer/editCustomer.html',
 	    fit:false,
-	    height:300,
+	    height:500,
 	    width:600,
 	    buttons:[{
 			text:'确定',
 			handler:function(){
-				editCustomerSubmit(row.iidd);
+				editCustomerSubmit(row.numberCode);
 			}
 		},{
 			text:'取消',
@@ -141,10 +162,17 @@ function editCustomerButton(title){
 				success:function(data){
 					if(data.status==1){
 						$("#nickNameForm").val(data.content.nickName);
-						$("#phoneForm").val(data.content.phone);
-						$("#emailForm").val(data.content.email);
-						$("#linkmanForm").val(data.content.linkman);
-						$("#linkPhoneForm").val(data.content.linkPhone);
+						$("#phoneForm").val(data.content.username);
+						$("#addressForm").val(data.content.address);
+						
+						$("#linkmanName1Form").val(data.content.linkmanName1);
+						$("#linkmanName2Form").val(data.content.linkmanName2);
+						$("#linkmanPhone1Form").val(data.content.linkmanPhone1);
+						$("#linkmanPhone2Form").val(data.content.linkmanPhone2);
+						
+						$("#linkmanType1Form").combobox('setValue',row.linkmanType1);
+						$("#linkmanType2Form").combobox('setValue',row.linkmanType2);
+					
 					}else{
 						top.$.messager.alert("警告",data.msg,"warning");
 					}
@@ -155,21 +183,33 @@ function editCustomerButton(title){
 }
 
 
-function editCustomerSubmit(iidd){
-	var password=$("#passwordForm").val();
-	var newPassword=$.md5(password).substr(8,16);
+function editCustomerSubmit(numberCode){
+	
 	if(!$("form").form('validate')){
 		return;
 	}
+	var nickName=$("#nickNameForm").val();
+	var address=$("#addressForm").val();
+	
+	var linkmanName1=$("#linkmanName1Form").val();
+	var linkmanName2=$("#linkmanName2Form").val();
+	var linkmanPhone1=$("#linkmanPhone1Form").val();
+	var linkmanPhone2=$("#linkmanPhone2Form").val();
+	var linkmanType1=$("#linkmanType1Form").combobox('getValue');
+	var linkmanType2=$("#linkmanType2Form").combobox('getValue');
+	
 	xyzAjax({
 		url:"../CustomerWS/editCustomer.do",
 		data:{
-			iidd:iidd,
-			nickName:$("#nickNameForm").val().trim(),
-			phone:$("#phoneForm").val().trim(),
-			email:$("#emailForm").val().trim(),
-			linkman:$("#linkmanForm").val().trim(),
-			linkPhone:$("#linkPhoneForm").val().trim()
+			numberCode:numberCode,
+			nickName:nickName,
+			address:address,
+			linkmanName1:linkmanName1,
+			linkmanName2:linkmanName2,
+			linkmanPhone1:linkmanPhone1,
+			linkmanPhone2:linkmanPhone2,
+			linkmanType1:linkmanType1,
+			linkmanType2:linkmanType2,
 		},
 		success:function(data){
 			if(data.status==1){

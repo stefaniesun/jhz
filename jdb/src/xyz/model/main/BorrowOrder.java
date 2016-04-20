@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,10 +17,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name="borrow_order")
 public class BorrowOrder {
 	
-	public static int STATUS_APPLY=0;
-	public static int STATUS_APPLY_YES=1;
-	public static int STATUS_APPLY_NO=2;
-	public static int STATUS_=3;
+	public static int STATUS_LOAN=1;
+
 
 	@Id
 	@Column(name="iidd",unique=true,nullable=false)
@@ -51,6 +50,12 @@ public class BorrowOrder {
 	@Column(name="return_date")
 	private Date returnDate;
 	
+	@Column(name="overdue")
+	private int overdue;
+	
+	@Column(name="overdue_amount")
+	private BigDecimal overdueAmount;
+	
 	@Column(name="cycle")
 	private int cycle;
 	
@@ -59,8 +64,30 @@ public class BorrowOrder {
 	
 	@Column(name="return_flag")
 	private int returnFlag;
+	
+	@Column(name="check_flag")
+	private int checkFlag;
+	
+	@Column(name="cancel_flag")
+	private int cancelFlag;
 
+	
+	@Column(name="check_remark")
+	private String checkRemark;
+	
+	@Transient
+	private String linkPhone;
 
+	@Transient
+	private String linkmanPhone1;
+	
+	@Transient
+	private String linkmanPhone2;
+
+	@Transient
+	private int borrowCount;
+	
+	
 	public String getIidd() {
 		return iidd;
 	}
@@ -156,6 +183,82 @@ public class BorrowOrder {
 	public void setReturnFlag(int returnFlag) {
 		this.returnFlag = returnFlag;
 	}
+
+	public String getLinkPhone() {
+		return linkPhone;
+	}
+
+	public String getCheckRemark() {
+		return checkRemark;
+	}
+
+	public void setCheckRemark(String checkRemark) {
+		this.checkRemark = checkRemark;
+	}
+
+	public int getCheckFlag() {
+		return checkFlag;
+	}
+
+	public void setCheckFlag(int checkFlag) {
+		this.checkFlag = checkFlag;
+	}
+
+	public void setLinkPhone(String linkPhone) {
+		this.linkPhone = linkPhone;
+	}
+
+	public String getLinkmanPhone1() {
+		return linkmanPhone1;
+	}
+
+	public void setLinkmanPhone1(String linkmanPhone1) {
+		this.linkmanPhone1 = linkmanPhone1;
+	}
+
+	public String getLinkmanPhone2() {
+		return linkmanPhone2;
+	}
+
+	public void setLinkmanPhone2(String linkmanPhone2) {
+		this.linkmanPhone2 = linkmanPhone2;
+	}
+
+	public int getBorrowCount() {
+		return borrowCount;
+	}
+
+	public void setBorrowCount(int borrowCount) {
+		this.borrowCount = borrowCount;
+	}
+
+	public int getCancelFlag() {
+		return cancelFlag;
+	}
+
+	public void setCancelFlag(int cancelFlag) {
+		this.cancelFlag = cancelFlag;
+	}
+
+	public int getOverdue() {
+		return overdue;
+	}
+
+	public void setOverdue(int overdue) {
+		this.overdue = overdue;
+	}
+
+	public BigDecimal getOverdueAmount() {
+		return overdueAmount;
+	}
+
+	public void setOverdueAmount(BigDecimal overdueAmount) {
+		this.overdueAmount = overdueAmount;
+	}
+
+
+
+	
 
 	
 }

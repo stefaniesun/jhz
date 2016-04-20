@@ -62,7 +62,6 @@
 <script src="../js/mui_20151228.min.js"></script>
 <script src="../js/xyzCommon.js"></script>
 <script src="../js/weui.js"></script>
-<!-- <script src="http://192.168.1.10:8080/xztrip/pay/js/common.js"></script> -->
 <script>
 mui.init({
 	swipeBack: false,
@@ -90,6 +89,7 @@ if(mui.os.plus){
 	});
 }
 var page = 0;
+
 function pageInit(){
 	mui('#pullrefresh_order').pullRefresh().pulldownLoading();
 	mui.each(document.querySelectorAll('#segmentedControl_order a'), function(index, ele) {

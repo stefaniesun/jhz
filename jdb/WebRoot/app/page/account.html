@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>资料完善</title>
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<style>
+		h5 {
+			padding: 8px;
+		}
+		.mui-content {
+			font-family: "Helvetica Neue",\5FAE\8F6F\96C5\9ED1,Tohoma;
+			padding-bottom: 44px;
+		}
+		ul, li {
+  			list-style-type: none;
+		}
+		.borrow ul {
+  			padding: 0px 12px;
+		}
+		.borrow ul li {
+			  padding: 7px 10px;
+			  margin-top: 15px;
+			  background: #fff;
+			  border-radius: 5px;
+			  height: 50px;
+			  line-height: 36px;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  line-height: 36px;
+		}
+		.borrow ul li .label {
+			  border-right: 1px solid #e8e8e8;
+			  width: 90px;
+			  color: #333;
+			  padding-right: 15px;
+		}
+		input, select {
+			  -webkit-user-modify: read-write-plaintext-only;
+			  -webkit-tap-highlight-color: rgba(0,0,0,0);
+			  -webkit-appearance: none;
+			  white-space: pre;
+		}
+		.borrow input[type=number], .borrow input[type=text], .borrow input[type=tel], .borrow select {
+			  appearance: none;
+			  -webkit-appearance: none;
+			  -moz-appearance: none;
+			  -ms-appearance: none;
+			  box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  -moz-box-sizing: border-box;
+			  border: 0;
+			  background: 0;
+			  border-radius: 5px;
+			  box-shadow: none;
+			  -webkit-box-shadow: none;
+			  display: block;
+			  margin: 0;
+			  padding-left: 10px;
+			  width: 100%;
+			  height: 40px;
+			  vertical-align: middle;
+			}
+			.ub-f1 {
+			  flex: 1;
+			  -webkit-flex: 1;
+			  box-flex: 1;
+			  -webkit-box-flex: 1;
+			}
+			.ubox {
+				  display: -webkit-box;
+				  display: box;
+				  display: -webkit-flex;
+			}
+			.hotel-tips {
+			margin: 10px;
+			font-size: 15px;
+			background-color: #fff;
+			padding: 8px;
+			border-radius: 3px;
+			text-align:center;
+		}
+		.borrow .DivSelect {
+			  background: transparent url(../images/down.png) no-repeat right 15px;
+			  background-size: 18px 10px;
+			  overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">提现/还款支付宝帐号</h1>
+	</header>
+	<div class="mui-content borrow">
+		
+	
+		<ul>
+				<li>
+                    <div class="ubox">
+                        <div class="label"><i class="iconfont">&#xe62d</i>帐号</div>
+                        <div class="ubox ub-f1"><input id="account" placeholder="请输入支付宝帐号" type="text"></div>
+                    </div>
+                </li>
+		</ul>
+		
+		 <p id="tip" class="hotel-tips">请确保支付宝帐号的准确性</p>
+		
+		<div class="mui-content-padded">
+				<button id=save type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">提交</button>
+			</div>
+		
+	</div>
+	<script src="../js/mui_20151228.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.md5.js"></script>
+	<script type="text/javascript" src="../js/xyzCommon.js"></script>
+	<script type="text/javascript">
+	
+	
+	var localLoginInfo = xyz.isNull(window.localStorage.localLoginInfo)?false:JSON.parse(window.localStorage.localLoginInfo);
+
+	xyz.ajax({
+		url:'CustomerWS/getCustomer.cus',
+		data:{
+			apikey:window.localStorage.apikey,
+			username:localLoginInfo.username
+		},
+		success:function(data){
+			if(data.status==1){
+				data=data.content;
+				if(!xyz.isNull(data.account)){
+					xyz.id("account").value=data.account;
+				}	
+			}else{
+				if(data.msg.indexOf('重新登录')>-1){
+					if(window.plus){
+						var loginWebview = plus.webview.getWebviewById('page/login.html');
+						loginWebview.evalJS('webviewId="";method=""');
+						loginWebview.show("slide-in-right", 300);
+					}
+				}else{
+					plus.nativeUI.alert(data.msg);
+				}
+			}
+		}
+	});
+	
+
+	
+	xyz.id('save').addEventListener('click', function() {
+		
+		var account=xyz.id("account").value;
+		
+		if(xyz.isNull(account)){
+			plus.nativeUI.alert('请输入支付宝帐号');
+			return;
+		}
+
+		xyz.ajax({
+			url:'CustomerWS/editAccount.cus',
+			data:{
+				apikey:window.localStorage.apikey,
+				account:account
+			},
+			success:function(data){
+				if(data.status==1){
+					mui.toast('保存成功');
+					mui.back();
+				}else{
+					if(data.msg.indexOf('重新登录')>-1){
+						if(window.plus){
+							var loginWebview = plus.webview.getWebviewById('page/login.html');
+							loginWebview.evalJS('webviewId="";method=""');
+							loginWebview.show("slide-in-right", 300);
+						}
+					}else{
+						plus.nativeUI.alert(data.msg);
+					}
+				}
+			}
+		});
+		
+		
+	});
+	
+	
+	
+
+	</script>
+</body>
+</html>

@@ -24,33 +24,74 @@
 					联系电话
 				</td>
 				<td>
-					<input type="text" id="phoneForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+					<input type="text" readonly="readonly" id="phoneForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right">
-					邮箱
+					常住地址
 				</td>
 				<td>
-					<input type="text" id="emailForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+					<input type="text" id="addressForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right">
-					联系人
+					紧急联系人1姓名
 				</td>
 				<td>
-					<input type="text" id="linkmanForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+					<input type="text" id="linkmanName1Form" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
 				</td>
 			</tr>
-			<tr>
+				<tr>
 				<td align="right">
-					联系人电话
+					紧急联系人1电话
 				</td>
 				<td>
-					<input type="text" id="linkPhoneForm" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+					<input type="text" id="linkmanPhone1Form" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
 				</td>
 			</tr>
+				<tr>
+				<td align="right">
+					紧急联系人1类型
+				</td>
+				<td>
+						<select id="linkmanType1Form" class="easyui-combobox" data-options="editable:false" name="dept" style="width:200px;">   
+			    <option value="父亲">父亲</option>
+			    <option value="母亲">母亲</option>   
+				</select>  
+				</td>
+			</tr>
+			
+				<tr>
+				<td align="right">
+					紧急联系人2姓名
+				</td>
+				<td>
+					<input type="text" id="linkmanName2Form" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+				</td>
+			</tr>
+				<tr>
+				<td align="right">
+					紧急联系人2电话
+				</td>
+				<td>
+					<input type="text" id="linkmanPhone2Form" style="width:400px;" class="easyui-validatebox" data-options="required:true,validType:'length[0,20]'"/>
+				</td>
+			</tr>
+				<tr>
+				<td align="right">
+					紧急联系人2类型
+				</td>
+				<td>
+						<select id="linkmanType2Form" class="easyui-combobox" data-options="editable:false" name="dept" style="width:200px;">   
+			    <option value="朋友">朋友</option>
+			    <option value="亲戚">亲戚</option>   
+			      <option value="同学">同学</option>   
+				</select>  
+				</td>
+			</tr>
+		
 		</table>
 		</form>
 	</div>

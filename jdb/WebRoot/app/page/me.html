@@ -103,6 +103,11 @@ padding:9px 15px;
 			</ul>
 			<ul class="mui-table-view mui-table-view-chevron">
 			
+			<li class="mui-table-view-cell">
+					<a id="account" href="javascript:void(0);" class="mui-navigate-right"><i class="iconfont">&#xe61a</i>提现账户</a>
+				</li>
+			
+			
 				<li class="mui-table-view-cell">
 					<a id="linkman" href="javascript:void(0);" class="mui-navigate-right"><i class="iconfont">&#xe625</i>紧急联系人</a>
 				</li>
@@ -246,6 +251,27 @@ xyz.id('linkman').addEventListener('tap', function() {
 	mui.openWindow({
 		id: 'page/linkman.html',
 		url: xyz.getFullurl('page/linkman.html'),
+		styles: {
+			popGesture: "close"//启用侧滑关闭
+		},
+		show: {
+			aniShow: 'slide-in-right'//采用从右边滑入的动画效果
+		},
+		waiting: {
+			autoShow: true,//自动显示等待框
+			title:'加载中...'//等待框标题
+		}
+	});
+});
+
+xyz.id('account').addEventListener('tap', function() {
+	if(!localLoginInfo){
+		openLoginPage();
+		return;
+	}
+	mui.openWindow({
+		id: 'page/account.html',
+		url: xyz.getFullurl('page/account.html'),
 		styles: {
 			popGesture: "close"//启用侧滑关闭
 		},

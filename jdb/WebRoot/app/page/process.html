@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>订单详情</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+	<link rel="stylesheet" href="../css/customer.mui.theme.css">
+	<link rel="stylesheet" href="../css/weui.min.css"/>
+<style>
+	/**重写**/
+.mui-card{
+	margin: 0 10px;
+}
+.title {
+	margin: 10px 15px 2px;
+	color: #6d6d72;
+	font-size: 15px;
+}
+.edit-btn{
+	line-height: 1.0;
+	font-size: 12px;
+	margin-left: 15px;
+}
+#infoContianer div ul li{
+	float:left;
+	width: 25%;
+	list-style: none;
+	text-align: right;
+	font-size: 12px;
+}
+
+
+i.mui-media-object {
+	color: #ccc;
+	font-size: 18px;
+}
+.hotel-right {
+	position: absolute;
+	right: 0px;
+}
+.hotel-right-padded {
+	position: absolute;
+	right: 20px;
+}
+.hotel-right-text {
+	position: absolute;
+	font-size: 14px;
+	height: 16px;
+	line-height: 16px;
+	right: 40px;
+	top: 50%;
+	margin-top: -8px;
+}
+.hotel-bar-order-info {
+	position: relative;
+	padding: 10px;
+}
+.hotel-tips {
+	margin: 10px;
+	font-size: 15px;
+	color: #ea8010;
+	background-color: #fff;
+	padding: 8px;
+	border-radius: 3px;
+}
+.hotel-order-action {
+	margin: 0px;
+	padding: 0px 10px;
+	position: relative;
+	text-align: center;
+	color: #666;
+	height: 45px;
+	font-size: 0px;
+}
+.hotel-order-action li {
+	background-color: #fff;
+	border: solid 1px #c8c7cc;
+	border-left: none;
+	display: inline-block;
+	padding: 10px 7px;
+	margin: 0px;
+	width: 33.3%;
+	font-size: 11px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.hotel-order-action li:first-child {
+	border-left: solid 1px #c8c7cc;
+}
+.hotel-order-action li:active {
+	border: solid 1px #099fde;
+	color: #099fde;
+}
+.mui-table-view {
+	margin-bottom: 15px;
+}
+.hotel-costomer-btn {
+	margin-bottom: 20px;
+	padding: 10px;
+	font-size: 14px;
+	color:#fff;
+	background-color:#ff9a14;
+}
+.hotel-color-orange {
+color: #ff9a14 !important;
+}
+
+.code-detail{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top:0px;
+	z-index: 99;
+	background-color: rgba(0,0,0,0.85);
+	-webkit-transition: .5s;
+	display: none;
+	padding: 10px;
+}
+.code-detail-info{
+	background-color: #fff;
+	margin-top: 150px;
+	padding: 20px 40px 40px 40px;
+	margin-left:10%;
+	margin-right:10%;
+	 border-radius:8px;
+	 text-align:center;
+}
+.code-detail-info h4{
+margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">借款进度</h1>
+	</header>
+	<div class="mui-content">
+	
+		<ul class="mui-table-view" style="margin-top:20px">
+				<li class="mui-input-row mui-table-view-cell">
+					<a>
+						借款金额
+						<span class="hotel-right-padded hotel-color-orange " >¥<span id="borrowAmount"></span></span>
+					</a>
+				</li>
+					<li class="mui-input-row mui-table-view-cell">
+					<a>
+						手续费
+						<span class="hotel-right-padded hotel-color-orange " >¥<span id="charge"></span></span>
+					</a>
+				</li>
+				<li class="mui-input-row mui-table-view-cell">
+					<a>
+						期数
+						<span class="hotel-right-padded " ><span id="cycle"></span></span>
+					</a>
+				</li>
+				
+					<li class="mui-input-row mui-table-view-cell">
+					<a>
+						借款时间
+						<span class="hotel-right-padded " ><span id="addDate"></span></span>
+					</a>
+				</li>
+				
+					<li class="mui-input-row mui-table-view-cell">
+					<a>
+						还款时间
+						<span class="hotel-right-padded "><span id="returnDate"></span></span>
+					</a>
+				</li>
+
+			</ul>
+			
+			
+			<ul class="mui-table-view">
+				<li class="mui-input-row mui-table-view-cell">
+					<a>
+						当前状态
+						<span class="hotel-right-padded" id="status"></span>
+					</a>
+				</li>
+
+			</ul>
+			
+			
+			 <p id="tip" class="hotel-tips" style="display:none"></p>
+			
+		
+			
+			<div id="cancelBtnDiv" class="mui-content-padded" style="display:none">
+				<button  id="cancelBtn" class="hotel-costomer-btn mui-btn-block">取消借款</button>
+			</div>
+			
+			
+			<div class="code-detail">
+					<div class="code-detail-info" style="text-align:center">
+						<h4 id="clientNum">票单号</h4>
+						<div id="code" style="text-align: -webkit-center;"></div>
+					</div>
+			</div>
+	
+	</div>
+</body>
+<script src="../js/mui_20151228.min.js"></script>
+<script type="text/javascript" src="../js/xyzCommon.js"></script>
+
+
+<script type="text/javascript">
+
+
+if(mui.os.plus){
+	mui.plusReady(function() {
+		setTimeout(function() {
+			pageInit();
+		}, 100);
+	});
+}else{
+	mui.ready(function() {
+		pageInit();
+	});
+}
+
+var numberCode="";
+
+/**
+ * 初始化页面信息
+ */
+function pageInit(){
+
+	xyz.ajax({
+		url:'BorrowOrderWS/getDoingBorrowOrder.cus',
+		data:{
+			apikey:window.localStorage.apikey
+		},
+		success:function(data){
+			console.log(data);
+			if(data.status==1){
+				console.log(data);
+				
+				xyz.id("borrowAmount").innerHTML=data.content.borrowAmount;
+				xyz.id("charge").innerHTML=data.content.charge;
+				xyz.id("cycle").innerHTML=data.content.cycle;
+				xyz.id("addDate").innerHTML=data.content.addDate;
+				xyz.id("returnDate").innerHTML=data.content.returnDate;
+				numberCode=data.content.numberCode;
+				
+				
+				if(data.content.status==1){
+					xyz.id("tip").innerHTML="请到账户查收贷款，注意如期归还款项";
+					xyz.id("status").innerHTML="<span style='color:#00bb9c'>已放款<span>";
+				}else if(data.content.cancelFlag==1){
+					xyz.id("status").innerHTML="<span style='color:#eb4f38'>已取消<span>";
+				}else if(data.content.checkFlag==0){
+					xyz.id("cancelBtnDiv").style.display="block";
+					xyz.id("status").innerHTML="<span style='color:#ea8010'>待审核<span>";
+				}else if(data.content.checkFlag==-1){
+					xyz.id("cancelBtnDiv").style.display="block";
+					xyz.id("tip").style.display="block";
+					xyz.id("tip").innerHTML=data.content.checkRemark;
+					xyz.id("status").innerHTML="<span style='color:#eb4f38'>审核失败<span>";
+				}else if(data.content.checkFlag==1){
+					xyz.id("cancelBtnDiv").style.display="block";
+					xyz.id("tip").style.display="block";
+					xyz.id("tip").innerHTML="请尽快将手续费打款到支付宝帐号374935654@qq.com，我们审核通过后会及时放款";
+					xyz.id("status").innerHTML="<span style='color:#11cd6e'>已审核<span>";
+				}
+				
+				
+				
+				
+			}
+		}
+	});
+}
+
+
+xyz.id("cancelBtnDiv").addEventListener('click', function() {
+	
+	mui.confirm('您要取消当前借款申请吗？', '取消申请', ['确定', '取消'], function(e){
+		if(e.index==0){
+			xyz.ajax({
+				url:'BorrowOrderWS/cancelBorrowOrderOper.cus',
+				data:{
+					apikey:window.localStorage.apikey,
+					numberCode:numberCode
+				},
+				success:function(data){
+					if(data.status==1){
+						mui.toast('取消成功');
+						mui.back();
+					}else{
+						if(data.msg.indexOf('重新登录')>-1){
+							if(window.plus){
+								var loginWebview = plus.webview.getWebviewById('page/login.html');
+								loginWebview.evalJS('webviewId="";method=""');
+								loginWebview.show("slide-in-right", 300);
+							}
+						}else{
+							plus.nativeUI.alert(data.msg);
+						}
+					}
+				}
+			});
+		}
+	});
+	
+});
+
+</script>
+</html>

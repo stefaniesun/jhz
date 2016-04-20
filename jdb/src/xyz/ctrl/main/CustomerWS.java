@@ -2,6 +2,8 @@ package xyz.ctrl.main;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,15 +49,23 @@ public class CustomerWS {
 		return customerSvc.registerOper(phone,nickName,password);
 	}
 	
+	@RequestMapping(value="editAccount")
+	@ResponseBody
+	public Map<String,Object> editAccount(String account){
+		return customerSvc.editAccount(account);
+	}
+	
+	
+	
 	/**
 	 * 用户登录
 	 */
 	@RequestMapping(value="login")
 	@ResponseBody
-	public Map<String, Object> login(
+	public Map<String, Object> login(HttpServletRequest request,
 			String username,
 			String password){
-		return customerSvc.loginOper(username, password);
+		return customerSvc.loginOper(request,username, password);
 	}
 	
 
@@ -158,9 +168,9 @@ public class CustomerWS {
 	 */	
 	@RequestMapping(value="editCustomer")
 	@ResponseBody
-	public Map<String,Object> editCustomer(String iidd,
-			String nickName,String phone,String email,String linkman,String linkPhone){
-		return customerSvc.editCustomer(iidd, nickName,phone,email,linkman,linkPhone);
+	public Map<String,Object> editCustomer(String numberCode,
+			String nickName,String address,String linkmanName1,String linkmanName2,String linkmanPhone1,String linkmanPhone2,String linkmanType1,String linkmanType2){
+		return customerSvc.editCustomer(numberCode, nickName,address,linkmanName1,linkmanName2,linkmanPhone1,linkmanPhone2,linkmanType1,linkmanType2);
 	}
 	
 	/**

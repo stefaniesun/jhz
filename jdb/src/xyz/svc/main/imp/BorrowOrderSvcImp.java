@@ -3,6 +3,7 @@ package xyz.svc.main.imp;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,10 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
+import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import freemarker.ext.util.ModelFactory;
+import freemarker.template.utility.StringUtil;
 import xyz.dao.CommonDao;
 import xyz.filter.MyRequestUtil;
 import xyz.filter.ReturnUtil;
@@ -23,6 +26,7 @@ import xyz.model.main.Customer;
 import xyz.model.main.MoneyFlow;
 import xyz.model.member.XyzSessionLogin;
 import xyz.svc.main.BorrowOrderSvp;
+import xyz.util.StringTool;
 import xyz.util.UUIDUtil;
 
 @Service
@@ -61,7 +65,7 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 				commonDao.save(borrowOrder);
 				
 				
-				MoneyFlow moneyFlow=new MoneyFlow();
+				/*MoneyFlow moneyFlow=new MoneyFlow();
 				moneyFlow.setNumberCode(UUIDUtil.getUUIDStringFor32());
 				moneyFlow.setAddDate(new Date());
 				moneyFlow.setCycle(cycle);
@@ -70,14 +74,14 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 				moneyFlow.setReturnDate(calendar.getTime());
 				moneyFlow.setCustomer(customer.getNumberCode());
 				moneyFlow.setAmount(model.getBaseAmount().multiply(new BigDecimal(cycle)));
-				commonDao.save(moneyFlow);
+				commonDao.save(moneyFlow);*/
 		}	
 		return ReturnUtil.returnMap(1,null);
 	}
 
 	@Override
-	public Map<String, Object> queryUserTagList(int offset, int pagesize) {
-		String hql="from BorrowOrder where 1=1 ";
+	public Map<String, Object> queryBorrowOrderList(int offset, int pagesize) {
+		String hql="from BorrowOrder where 1=1  order by addDate desc";
 
 		String countHql = "select count(iidd) "+hql;
 		Query countQuery = commonDao.getQuery(countHql);
@@ -88,10 +92,41 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 		query.setMaxResults(pagesize);
 		query.setFirstResult(offset);
 		@SuppressWarnings("unchecked")
-		List<BorrowOrder> customerList=query.list();
+		List<BorrowOrder> list=query.list();
+		
+		
+		List<String> userList=new ArrayList<String>();
+		for(BorrowOrder order:list){
+			userList.add(order.getCustomer());
+		}
+		
+		hql="from Customer where numberCode in("+StringTool.listToSqlString(userList)+")";
+		@SuppressWarnings("unchecked")
+		List<Customer> customers=commonDao.queryByHql(hql);
+		hql="select customer,count(iidd) from BorrowOrder where customer in("+StringTool.listToSqlString(userList)+") group by customer";
+		@SuppressWarnings("unchecked")
+		List<Object> datas=commonDao.queryByHql(hql);
+		
+		for(BorrowOrder order:list){
+			for(Customer customer:customers){
+				if(order.getCustomer().equals(customer.getNumberCode())){
+					order.setLinkPhone(customer.getUsername());
+					order.setLinkmanPhone1(customer.getLinkmanPhone1());
+					order.setLinkmanPhone2(customer.getLinkmanPhone2());
+				}	
+			}
+			for(Object obj:datas){
+				Object[] arr=(Object[]) obj;
+				if(order.getCustomer().equals(arr[0].toString())){
+					order.setBorrowCount(new BigDecimal(arr[1].toString()).intValue());
+				}	
+			}
+		}
+		
+		
 		Map<String,Object> mapContent=new HashMap<String, Object>();
 		mapContent.put("total", count);
-		mapContent.put("rows",customerList);
+		mapContent.put("rows",list);
 		return ReturnUtil.returnMap(1, mapContent);
 	}
 
@@ -112,6 +147,7 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 		query.setFirstResult(offset);
 		@SuppressWarnings("unchecked")
 		List<MoneyFlow> list=query.list();
+		
 		
 		Map<String,Object> mapContent=new HashMap<String, Object>();
 		mapContent.put("total", count);
@@ -152,6 +188,8 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 		commonDao.update(moneyFlow);
 		
 		BorrowOrder borrowOrder=(BorrowOrder) commonDao.getObjectByUniqueCode("BorrowOrder", "numberCode", moneyFlow.getBorrowOrder());
+		borrowOrder.setStatus(BorrowOrder.STATUS_LOAN);
+		commonDao.update(borrowOrder);
 		
 		MoneyFlow newMoneyFlow=new MoneyFlow();
 		newMoneyFlow.setAddDate(new Date());
@@ -178,6 +216,58 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 		commonDao.update(borrowOrder);
 
 		return ReturnUtil.returnMap(1, null);
+	}
+
+	@Override
+	public Map<String, Object> getDoingBorrowOrder() {
+	
+		XyzSessionLogin xyzSessionLogin = MyRequestUtil.getXyzSessionLogin();
+		
+		if(xyzSessionLogin==null){
+			return ReturnUtil.returnMap(0,"无有效登录信息");
+		}
+		
+		Customer customer=(Customer) commonDao.getObjectByUniqueCode("Customer", "username", xyzSessionLogin.getUsername());
+		
+		String hql="from BorrowOrder where customer='"+customer.getNumberCode()+"' and returnFlag=0 order by addDate desc";
+		@SuppressWarnings("unchecked")
+		List<BorrowOrder> list=commonDao.queryByHql(hql);
+		
+		if(list.size()>0){
+			return ReturnUtil.returnMap(1, list.get(0));
+		}
+		return ReturnUtil.returnMap(0, null);
+	}
+
+	@Override
+	public Map<String, Object> cancelBorrowOrderOper(String numberCode) {
+		 BorrowOrder borrowOrder=(BorrowOrder) commonDao.getObjectByUniqueCode("BorrowOrder", "numberCode", numberCode);
+		 borrowOrder.setCancelFlag(1);
+		 commonDao.update(borrowOrder);
+		 return ReturnUtil.returnMap(1, null);
+	}
+
+	@Override
+	public Map<String, Object> checkBorrowOrderOper(String numberCode, int value,String remark) {
+		BorrowOrder borrowOrder=(BorrowOrder) commonDao.getObjectByUniqueCode("BorrowOrder", "numberCode", numberCode);
+		 borrowOrder.setCheckFlag(value);
+		 borrowOrder.setCheckRemark(remark);
+		 commonDao.update(borrowOrder);
+		 
+		 if(value==1){
+		 	MoneyFlow moneyFlow=new MoneyFlow();
+			moneyFlow.setNumberCode(UUIDUtil.getUUIDStringFor32());
+			moneyFlow.setAddDate(new Date());
+			moneyFlow.setCycle(borrowOrder.getCycle());
+			moneyFlow.setBorrowOrder(borrowOrder.getNumberCode());
+			moneyFlow.setType(MoneyFlow.FLOW_STATUS_CHARGE);
+			moneyFlow.setReturnDate(borrowOrder.getReturnDate());
+			moneyFlow.setCustomer(borrowOrder.getCustomer());
+			moneyFlow.setAmount(borrowOrder.getCharge());
+			commonDao.save(moneyFlow);
+		 }
+		 
+		 return ReturnUtil.returnMap(1, null);
 	}
 
 }

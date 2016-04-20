@@ -21,29 +21,68 @@ function initTable(){
 		idField : 'iidd',
 		height:'auto',
 		columns : [[
-		    {field:'checkboxTemp',checkbox:true},
-			{field:'nickName',title:'借款人',width:100},
-			{field:'borrowAmount',title:'借款金额',width:100},
-			{field:'quota',title:'手续费',width:100},
-			{field:'cycle',title:'借款期数',width:100},
-			{field:'charge',title:'手续费',width:100},
-			{field:'addDate',title:'申请时间',width:100},
-			{field:'returnDate',title:'还款时间',width:100},
-			{field:'returnFlag',title:'状态',
-				formatter: function(value,row){
-					if(value=="0"){
-						return "<span style='color:#eb4f38'>未还款</span>";
-					}else if(value=="1"){
-						return "<span style='color:#11cd6e'>已还款</span>";
-					}
-					
-				}		
-			},
-			{field:'operTemp1',title:'交易流水',
-				formatter: function(value,row){
-					return "<a href='javascript:void(0);' onclick='moneyFlow(\""+row.numberCode+"\")'>交易流水</a>";
-				}	
-			},
+		            {field:'checkboxTemp',checkbox:true},
+	       			{field:'nickName',title:'借款人',width:70},
+	       			{field:'linkPhone',title:'联系电话',width:80},
+		      /*			{field:'linkmanPhone1',title:'第一联系电话',width:80},
+		      			{field:'linkmanPhone2',title:'第二联系电话',width:80},
+		      			{field:'address',title:'现居住地',width:80},*/
+		      		
+		     			{field:'borrowCount',title:'借款次数',width:60},
+		     			{field:'borrowAmount',title:'借款金额',width:60},
+		     			{field:'quota',title:'手续费',width:50},
+		     			{field:'cycle',title:'借款期数',width:60},
+		     			{field:'charge',title:'手续费',width:50},
+		     			{field:'addDate',title:'借款时间',width:100},
+		     			{field:'addDate',title:'延期申请',width:100},
+		     			{field:'returnDate',title:'还款时间',width:100},
+		     			{field:'overdue',title:'逾期',width:50},
+		     			{field:'overdueAmount',title:'逾期费',width:50},
+		     			{field:'checkFlag',title:'审核状态',
+		    				formatter: function(value,row){
+		    					if(row.cancelFlag=="0"){
+		    						if(value=="-1"||value=="0"){
+		    							return  "<a href='javascript:void(0);' onclick='check(\""+row.numberCode+"\")'>审核</a>";
+		    						}else if(value=="1"){
+		    							return "<span style='color:#11cd6e'>已审核</span>";
+		    						}
+		    					}
+		    				}		
+		    			},
+		    			{field:'returnFlag',title:'状态',
+		    				formatter: function(value,row){
+		    					if(row.cancelFlag=="1"){
+		    						return "<span style='color:#eb4f38'>已取消</span>";
+		    					}else if(row.checkFlag=="0"){
+		    						return "<span style='color:#a9b7b7'>待审核</span>";
+		    					}else if(value=="0"){
+		    						return "<span style='color:#56abe4'>进行中</span>";
+		    					}else if(value=="1"){
+		    						return "<span style='color:#11cd6e'>已还款</span>";
+		    					}
+		    					
+		    				}		
+		    			},
+		    			{field:'operTemp1',title:'交易流水',
+		    				formatter: function(value,row){
+		    					if(row.checkFlag=="1"){
+		    						return "<a href='javascript:void(0);' onclick='moneyFlow(\""+row.numberCode+"\")'>交易流水</a>";
+		    					}
+		    					
+		    				}	
+		    			},
+		    			{field:'operTemp2',title:'借款协议',
+		    				formatter: function(value,row){
+		    					if(row.checkFlag=="1"){
+		    						return "<a href='javascript:void(0);' onclick='print(\""+row.numberCode+"\")'>打印</a>";
+		    					}
+		    					
+		    				}	
+		    			},
+		      			]],
+		frozenColumns : [[
+		             	
+			
 		]]
 	});
 	
@@ -57,22 +96,67 @@ function loadTable(){
 }
 
 
-function editCustomerEnabled( iidd, enabled){
+
+function check(numberCode){
+	 var contentHtml = "<table>";
+	 contentHtml += "<tr>";
+	 contentHtml += "<td align='right'>";
+	 contentHtml += "审核备注 ： &nbsp";
+	 contentHtml += "</td>";
+	 contentHtml += "<td>";
+	 contentHtml += "<input type='text' id='remarkForm' style='width:400px;' />";
+	 contentHtml += "</td>";
+	 contentHtml += "</tr>";
+	 contentHtml += "</table>";
+	
+	xyzdialog({
+		dialog : 'dialogFormDiv_check',
+		title : '审核借款',
+		content : contentHtml,
+	    fit:false,
+	    height:350,
+	    width:600,
+	    buttons:[{
+			text:'审核通过',
+			handler:function(){
+				checkSubmit(numberCode,"1");
+			}
+		},{
+			text:'审核不通过',
+			handler:function(){
+				checkSubmit(numberCode,"-1");
+			}
+		},{
+			text:'取消',
+			handler:function(){
+				$("#dialogFormDiv_check").dialog("destroy");
+			}
+		}]
+	});
+}
+
+function checkSubmit(numberCode,value){
+	
+	var remark=	$("#remarkForm").val();
+	
 	xyzAjax({
-		url:"../CustomerWS/editCustomerEnabled.do",
+		url : "../BorrowOrderWS/checkBorrowOrderOper.do",
 		data:{
-			iidd:iidd,
-			enabled:enabled
+			numberCode:numberCode,
+			value:value,
+			remark:remark
 		},
 		success:function(data){
 			if(data.status==1){
-				top.$.messager.alert("提示","操作成功","info");
-				$("#customerManagerTable").datagrid("reload");
+				top.$.messager.alert("提示","保存成功","info");
+				$("#dialogFormDiv_check").dialog("destroy");
+				$("#borrowOrderManagerTable").datagrid("reload");
 			}else{
 				top.$.messager.alert("警告",data.msg,"warning");
 			}
 		}
 	});
+	
 }
 
 function addUserTagButton(title){
@@ -124,56 +208,6 @@ function addUserTagButton(title){
 		}]
 	});
 	
-}
-
-
-function editCustomerButton(title){
-	
-	var customer = $("#customerManagerTable").datagrid("getChecked");
-	if(customer.length != 1){
-		top.$.messager.alert("提示","请先选中单个对象！","info");
-		return;
-	}
-	var row = customer[0];
-	
-	xyzdialog({
-		dialog : 'dialogFormDiv_editCustomer',
-		title : title,
-	    href : '../jsp_buyer/editCustomer.html',
-	    fit:false,
-	    height:300,
-	    width:600,
-	    buttons:[{
-			text:'确定',
-			handler:function(){
-				editCustomerSubmit(row.iidd);
-			}
-		},{
-			text:'取消',
-			handler:function(){
-				$("#dialogFormDiv_editCustomer").dialog("destroy");
-			}
-		}],
-		onOpen : function(){
-			xyzAjax({
-				url : "../CustomerWS/getCustomer.do",
-				data:{
-					username:row.username
-				},
-				success:function(data){
-					if(data.status==1){
-						$("#nickNameForm").val(data.content.nickName);
-						$("#phoneForm").val(data.content.phone);
-						$("#emailForm").val(data.content.email);
-						$("#linkmanForm").val(data.content.linkman);
-						$("#linkPhoneForm").val(data.content.linkPhone);
-					}else{
-						top.$.messager.alert("警告",data.msg,"warning");
-					}
-				}
-			});
-		}
-	});
 }
 
 

@@ -109,6 +109,7 @@
 
 <body>
 	<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 		<h1 class="mui-title">立即注册</h1>
 	</header>
 	<div class="mui-content">
@@ -120,7 +121,7 @@
 				</div>
 				<div class="mui-input-row">
 					<label>姓名</label>
-					<input id='nickName' type="tel" class="mui-input-clear mui-input" placeholder="请输入姓名">
+					<input id='nickName' type="text" class="mui-input-clear mui-input" placeholder="请输入姓名">
 				</div>
 				<div class="mui-input-row">
 					<label>输入密码</label>
@@ -132,7 +133,7 @@
 				</div>
 				<div class="mui-input-row validateCode">
 					<label>验证码</label>
-					<input id='validateCode' type="text" class="mui-input-clear mui-input" placeholder="验证码">
+					<input id='validateCode' type="tel" class="mui-input-clear mui-input" placeholder="验证码">
 					<button type="button" class="yzm_btn" id="sendValidateCodeBtn" data-isDisabled="true">发送验证码</button>
 				</div>
 			</form>
@@ -220,7 +221,7 @@
 	//下一步按钮
 	xyz.id('nextSetupBtn').addEventListener('tap', function() {
 		var phoneNum = xyz.id("phoneNum").value;
-		var nickName=xyz.id("'nickName'").value;
+		var nickName=xyz.id("nickName").value;
 		var validateCode = xyz.id("validateCode").value;
 		var password = xyz.id('password').value;
 		var repassword = xyz.id('repassword').value;

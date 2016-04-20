@@ -23,13 +23,25 @@ public class BorrowOrderWS {
 				return borrowOrderSvp.addBorrowOrder(borrowModel, cycle);
 		}
 	
+	@RequestMapping(value="cancelBorrowOrderOper")
+	@ResponseBody
+	public Map<String, Object> cancelBorrowOrderOper(String numberCode){
+				return borrowOrderSvp.cancelBorrowOrderOper(numberCode);
+		}
+	
+	@RequestMapping(value="checkBorrowOrderOper")
+	@ResponseBody
+	public Map<String, Object> checkBorrowOrderOper(String numberCode,int value,String remark){
+				return borrowOrderSvp.checkBorrowOrderOper(numberCode,value,remark);
+		}
+	
 	@RequestMapping(value="queryBorrowOrderList")
 	@ResponseBody
 	public Map<String, Object> queryBorrowOrderList(int page,
 			int rows){
 		int pagesize = rows;
 		int offset = (page - 1) * pagesize;
-		return borrowOrderSvp.queryUserTagList(offset, pagesize);
+		return borrowOrderSvp.queryBorrowOrderList(offset, pagesize);
 	}
 	
 	@RequestMapping(value="queryMoneyFlowList")
@@ -58,6 +70,13 @@ public class BorrowOrderWS {
 	@ResponseBody
 	public Map<String, Object> backConfirmOper(String numberCode){
 		return borrowOrderSvp.backConfirmOper(numberCode);
+	}
+	
+	
+	@RequestMapping(value="getDoingBorrowOrder")
+	@ResponseBody
+	public Map<String, Object> getDoingBorrowOrder(){
+		return borrowOrderSvp.getDoingBorrowOrder();
 	}
 	
 	

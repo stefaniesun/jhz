@@ -26,7 +26,8 @@ Date.prototype.Format = function(fmt) { // author: meizz
 	var xyz = {};
 	xyz.config = {
 	/*	server : 'http://www.xingzang.net/',*/
-		server : 'http://192.168.1.106:8080/xztrip/',
+/*		server : 'http://121.40.98.234:8080/xztrip/',	*/
+		server : 'http://192.168.1.102:8080/xztrip/',
 		version : new Date().getTime()
 	};
 	xyz.getFullurl = function(shortUrl){

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
@@ -23,6 +26,7 @@ import xyz.model.security.LogOper;
 import xyz.svc.main.CustomerSvc;
 import xyz.util.Constant;
 import xyz.util.EncryptionUtil;
+import xyz.util.SmsUtil;
 import xyz.util.StringTool;
 import xyz.util.StringUtil;
 import xyz.util.UUIDUtil;
@@ -32,21 +36,24 @@ public class CustomerSvcImp implements CustomerSvc {
 
 	@Autowired
 	CommonDao commonDao;
-	
+		
 	@Override
 	public Map<String, Object> getRandCodeOper(String phone) {
 		if(phone.length()!=11 || !"1".equals(phone.substring(0, 1))){
 			return ReturnUtil.returnMap(0,"发送短信失败:手机号码不符合规范");
 		}
 		
-//		String randCode=StringUtil.getRandomStr(6);
-		String randCode="123456";
-		String content="您的验证码为:"+randCode+"，有效期30分钟。若非本人操作，请忽略。";
+		String randCode=StringUtil.getRandomStr(6);
+		/*String randCode="123456";*/
+		String content="您的验证码为:"+randCode+"，若非本人操作，请忽略。";
 		String dataKey=UUIDUtil.getUUIDStringFor32();
 		Map<String,String> accessoryParam = new HashMap<String, String>();
 		accessoryParam.put("content", content);
 		accessoryParam.put("phone", phone);
 		accessoryParam.put("dataKey",dataKey);
+		
+		
+		SmsUtil.sendSms(phone, content);
 		
 		/*@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>)new RmiUtil().loadData(Constant.smsUrl_smsSend, accessoryParam);
@@ -107,7 +114,7 @@ public class CustomerSvcImp implements CustomerSvc {
 	}
 
 	@Override
-	public Map<String, Object> loginOper(String username, String password) {
+	public Map<String, Object> loginOper(HttpServletRequest request,String username, String password) {
 	
 		String passwordSe = EncryptionUtil.md5(password+"{"+username+"}");
 		
@@ -130,7 +137,12 @@ public class CustomerSvcImp implements CustomerSvc {
 		xyzSessionLogin.setApikey(apikey);
 		xyzSessionLogin.setUsername(customer.getUsername());
 		xyzSessionLogin.setExpireDate(new Date(new Date().getTime()+Constant.sessionTimes));
-		XyzSessionUtil.logins.put(apikey, xyzSessionLogin);
+		/*XyzSessionUtil.logins.put(apikey, xyzSessionLogin);*/
+		
+		 HttpSession session=request.getSession(); 
+		 session.setAttribute("session", xyzSessionLogin);
+		
+		/*commonDao.save(xyzSessionLogin);*/
 		
 		return ReturnUtil.returnMap(1, xyzSessionLogin);
 	}
@@ -280,19 +292,7 @@ public class CustomerSvcImp implements CustomerSvc {
 		return ReturnUtil.returnMap(1, mapContent);
 	}
 
-	@Override
-	public Map<String, Object> editCustomer(String iidd,String nickName,String phone,String email,String linkman,String linkPhone) {
-		Customer customer=(Customer)commonDao.getObjectByUniqueCode("Customer", "iidd", iidd);
-		if(customer==null){
-			return ReturnUtil.returnMap(0,"客户不存在");
-		}
-		customer.setNickName(nickName);
-		customer.setPhone(phone);
-		customer.setEmail(email);
-		customer.setAlterDate(new Date());
-		commonDao.update(customer);
-		return ReturnUtil.returnMap(1, null);
-	}
+
 
 	@Override
 	public Map<String, Object> editCustomerEnabled(String iidd, int enabled) {
@@ -464,6 +464,42 @@ public class CustomerSvcImp implements CustomerSvc {
 		
 		return ReturnUtil.returnMap(1,null);
 		
+	}
+
+	@Override
+	public Map<String, Object> editCustomer(String numberCode, String nickName, String address, String linkmanName1,
+			String linkmanName2, String linkmanPhone1, String linkmanPhone2, String linkmanType1, String linkmanType2) {
+		
+		Customer customer=(Customer) commonDao.getObjectByUniqueCode("Customer", "numberCode", numberCode);
+		customer.setAlterDate(new Date());
+		customer.setNickName(nickName);
+		customer.setAddress(address);
+		customer.setLinkmanName1(linkmanName1);
+		customer.setLinkmanName2(linkmanName2);
+		customer.setLinkmanPhone1(linkmanPhone1);
+		customer.setLinkmanPhone2(linkmanPhone2);
+		customer.setLinkmanType1(linkmanType1);
+		customer.setLinkmanType2(linkmanType2);
+		
+		commonDao.update(customer);
+		
+		return ReturnUtil.returnMap(1,null);
+	}
+
+	@Override
+	public Map<String, Object> editAccount(String account) {
+	
+		XyzSessionLogin xyzSessionLogin = MyRequestUtil.getXyzSessionLogin();
+		if(xyzSessionLogin==null){
+			return ReturnUtil.returnMap(0,"无有效登录信息");
+		}
+		
+		Customer customer=(Customer) commonDao.getObjectByUniqueCode("Customer", "username", xyzSessionLogin.getUsername());
+		
+		customer.setAccount(account);
+		commonDao.update(customer);
+		
+		return ReturnUtil.returnMap(1,null);
 	}
 
 }

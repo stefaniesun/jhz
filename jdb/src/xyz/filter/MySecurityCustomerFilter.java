@@ -22,10 +22,13 @@ public class MySecurityCustomerFilter implements Filter{
 		"/BuyerOrderWS/createOrder.cus",
 		"/BorrowModelWS/getAllBorrowModel.cus",
 		"/BorrowOrderWS/addBorrowOrder.cus",
+		"/BorrowOrderWS/getDoingBorrowOrder.cus",
+		"/BorrowOrderWS/cancelBorrowOrderOper.cus",
 		"/LinkManWS/editLinkManInfo.cus",
 		"/LinkManWS/getLinkManInfo.cus",
 		"/UploadWS/uploadImageOper.cus",
-		"/CustomerWS/getCustomer.cus"
+		"/CustomerWS/getCustomer.cus",
+		"/CustomerWS/editAccount.cus"
 		
 	};
 	

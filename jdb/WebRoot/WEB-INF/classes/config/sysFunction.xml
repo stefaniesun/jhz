@@ -36,7 +36,7 @@
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000302" nameCn="手续费收款确认" url="/BorrowOrderWS/chargeConfirmOper.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000303" nameCn="借款放款确认" url="/BorrowOrderWS/loanConfirmOper.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000304" nameCn="借款还款确认" url="/BorrowOrderWS/backConfirmOper.do"/>
-		
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160412000305" nameCn="借款审核" url="/BorrowOrderWS/checkBorrowOrderOper.do"/>
 		
 	</function>
 
@@ -45,6 +45,10 @@
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110901" nameCn="借款模型新增" url="/BorrowModelWS/addBorrowModel.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110902" nameCn="借款模型修改" url="/BorrowModelWS/editBorrowModel.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110903" nameCn="删除借款模型" url="/BorrowModelWS/deleteBorrowModel.do"/>
+	</function>
+	
+	<function isApi="0" groupCn="配置" numberCode="systemConfigManager" nameCn="系统变量" url="/jsp_config/systemConfigManager.html">
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110904" nameCn="修改系统变量" url="/SystemConfigWS/editSystemConfig.do"/>
 	</function>
 	
 	<function isApi="0" groupCn="用户" numberCode="customerManager" nameCn="客户管理" url="/jsp_customer/customerManager.html">

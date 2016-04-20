@@ -2,19 +2,38 @@ package xyz.model.member;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name="xyz_session_login")
 public class XyzSessionLogin {
+	
+	@Id
+	@Column(name="apikey",unique=true,nullable=false)
+	@GeneratedValue(generator = "paymentableGenerator")       
+    @GenericGenerator(name = "paymentableGenerator", strategy = "uuid")   
 	private String apikey;//用户名
 	
+	@Column(name="user_name")
 	private String username;//用户名
 	
+	@Column(name="link_man")
 	private String linkman;//常用联系人姓名
 	
+	@Column(name="link_phone")
 	private String linkPhone;//常用联系人电话
 	
 	private String userTags;
 	
 	private int isSeller; // 1 卖家
 	
+	@Column(name="expire_date")
 	private Date expireDate;//过期时间
 
 	public Date getExpireDate() {

@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,10 +59,16 @@ public class MyLoginCustomerFilter implements Filter{
 		if(apikey==null){
 			throw new MyExceptionForLogin("不存在有效登录信息,请重新登录！");
 		}
-		XyzSessionLogin xyzSessionLogin = XyzSessionUtil.logins.get(apikey);
+		//XyzSessionLogin xyzSessionLogin = XyzSessionUtil.logins.get(apikey);
+	
+		HttpSession session=httpServletRequest.getSession(); 
+		
+		XyzSessionLogin xyzSessionLogin =(XyzSessionLogin) session.getAttribute("session");
 		
 		if(xyzSessionLogin==null){
-			throw new MyExceptionForLogin("不存在有效登录信息,请重新登录！");
+			
+				throw new MyExceptionForLogin("不存在有效登录信息,请重新登录！");
+	
 		}else{
 			Date date = new Date();
 			long temp = xyzSessionLogin.getExpireDate().getTime()-date.getTime();

@@ -32,6 +32,12 @@ public class Customer {
 	@Column(name="password")
 	private String password;
 	
+	@Column(name="address")
+	private String address;
+	
+	@Column(name="account")
+	private String account;
+	
 	@Column(name="email")
 	private String email;
 	
@@ -132,6 +138,14 @@ public class Customer {
 
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getEmail() {
@@ -239,6 +253,14 @@ public class Customer {
 
 	public void setLinkmanType2(String linkmanType2) {
 		this.linkmanType2 = linkmanType2;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 }

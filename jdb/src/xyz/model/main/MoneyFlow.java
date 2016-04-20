@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.type.PrimitiveByteArrayBlobType;
@@ -55,6 +56,8 @@ public class MoneyFlow {
 	
 	@Column(name="confirm_date")
 	private Date confirmDate;
+	
+
 
 	public String getIidd() {
 		return iidd;
@@ -143,5 +146,6 @@ public class MoneyFlow {
 	public void setConfirmFlag(int confirmFlag) {
 		this.confirmFlag = confirmFlag;
 	}
+
 	
 }
