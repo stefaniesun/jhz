@@ -56,6 +56,15 @@ public class CustomerWS {
 	}
 	
 	
+	@RequestMapping(value="checkCusromerOper")
+	@ResponseBody
+	public Map<String,Object> checkCusromerOper(String username){
+		return customerSvc.checkCusromerOper(username);
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 用户登录

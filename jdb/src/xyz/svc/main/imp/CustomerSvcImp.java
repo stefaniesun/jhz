@@ -1,5 +1,7 @@
 package xyz.svc.main.imp;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import xyz.filter.ReturnUtil;
 import xyz.filter.RmiUtil;
 import xyz.model.base.Sms;
 import xyz.model.main.Customer;
+import xyz.model.main.UserTag;
 import xyz.model.member.XyzSessionLogin;
 import xyz.model.member.XyzSessionUtil;
 import xyz.model.security.LogOper;
@@ -94,7 +97,7 @@ public class CustomerSvcImp implements CustomerSvc {
 		
 		Date date=new Date();
 		customer=new Customer();
-		customer.setNumberCode(UUIDUtil.getUUIDStringFor32());
+		customer.setNumberCode(StringUtil.get_numberCode("CU"));
 		customer.setUsername(phone);
 		customer.setNickName(nickName);
 		customer.setAddDate(date);
@@ -276,6 +279,8 @@ public class CustomerSvcImp implements CustomerSvc {
 		if(!"".equals(username)&&username!=null){
 			hql+=" and username like '%"+username+"%' ";
 		}
+		
+		
 		String countHql = "select count(iidd) "+hql;
 		Query countQuery = commonDao.getQuery(countHql);
 		Number countTemp = (Number)countQuery.uniqueResult();
@@ -286,6 +291,25 @@ public class CustomerSvcImp implements CustomerSvc {
 		query.setFirstResult(offset);
 		@SuppressWarnings("unchecked")
 		List<Customer> customerList=query.list();
+		
+		List<String> userList=new ArrayList<String>();
+		for(Customer customer:customerList){
+			userList.add(customer.getNumberCode());
+		}
+		
+		hql="select customer,count(iidd) from BorrowOrder where customer in("+StringTool.listToSqlString(userList)+") group by customer";
+		@SuppressWarnings("unchecked")
+		List<Object> datas=commonDao.queryByHql(hql);
+		
+		for(Customer customer:customerList){
+			for(Object obj:datas){
+				Object[] arr=(Object[]) obj;
+				if(customer.getNumberCode().equals(arr[0].toString())){
+					customer.setBorrowCount(new BigDecimal(arr[1].toString()).intValue());
+				}
+			}
+		}
+		
 		Map<String,Object> mapContent=new HashMap<String, Object>();
 		mapContent.put("total", count);
 		mapContent.put("rows",customerList);
@@ -435,7 +459,11 @@ public class CustomerSvcImp implements CustomerSvc {
 		if(customer==null){
 			return ReturnUtil.returnMap(0,"客户不存在");
 		}
+		
+		UserTag tag=(UserTag) commonDao.getObjectByUniqueCode("UserTag", "numberCode", userTag);
+		
 		customer.setUserTag(userTag);
+		customer.setUserTagName(tag.getNameCn());
 		commonDao.update(customer);
 		return ReturnUtil.returnMap(1,null);
 	}
@@ -497,6 +525,16 @@ public class CustomerSvcImp implements CustomerSvc {
 		Customer customer=(Customer) commonDao.getObjectByUniqueCode("Customer", "username", xyzSessionLogin.getUsername());
 		
 		customer.setAccount(account);
+		commonDao.update(customer);
+		
+		return ReturnUtil.returnMap(1,null);
+	}
+
+	@Override
+	public Map<String, Object> checkCusromerOper(String username) {
+		
+		Customer customer=(Customer) commonDao.getObjectByUniqueCode("Customer", "username", username);
+		customer.setCheckFlag(1);
 		commonDao.update(customer);
 		
 		return ReturnUtil.returnMap(1,null);

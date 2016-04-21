@@ -65,4 +65,6 @@ public interface CustomerSvc {
 			String linkmanName2, String linkmanPhone1, String linkmanPhone2, String linkmanType1, String linkmanType2);
 
 	public Map<String, Object> editAccount(String account);
+
+	public Map<String, Object> checkCusromerOper(String username);
 }

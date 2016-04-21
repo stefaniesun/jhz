@@ -51,6 +51,14 @@
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110904" nameCn="修改系统变量" url="/SystemConfigWS/editSystemConfig.do"/>
 	</function>
 	
+	
+	<function isApi="0" groupCn="配置" numberCode="accountManager" nameCn="支付帐号设置" url="/jsp_config/accountManager.html">
+		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160410110905" nameCn="查询支付帐号" url="/AccountWS/queryAccountList.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110906" nameCn="新增支付帐号" url="/AccountWS/addAccount.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110907" nameCn="编辑支付帐号" url="/AccountWS/editAccount.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_h20160410110908" nameCn="删除支付帐号" url="/AccountWS/deleteAccount.do"/>
+	</function>
+	
 	<function isApi="0" groupCn="用户" numberCode="customerManager" nameCn="客户管理" url="/jsp_customer/customerManager.html">
 		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20151231115900" nameCn="客户查询" url="/CustomerWS/queryCustomerList.do"/>
 		<api flagServer="0" isWork="0" buttonCode="buttonCode_h20160411234800" nameCn="设置客户等级" url="/CustomerWS/editUserTag.do"/>
@@ -65,6 +73,8 @@
 		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20160317101903" nameCn="查询客户位选中标签" url="/CustomerWS/queryCustomerUserTagFalseList.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101904" nameCn="添加标签进组" url="/CustomerWS/addCustomerUserTag.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101905" nameCn="删除组内标签" url="/CustomerWS/deleteCustomerUserTag.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101906" nameCn="审核用户信息" url="/CustomerWS/checkCusromerOper.do"/>
+		
 	</function>
 	
 	<function isApi="0" groupCn="用户" numberCode="customerUserTagManager" nameCn="客户标签等级" url="/jsp_customer/userTagManager.html">

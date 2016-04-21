@@ -14,7 +14,7 @@ import xyz.filter.ReturnUtil;
 import xyz.model.main.BorrowModel;
 import xyz.model.main.Customer;
 import xyz.svc.main.BorrowModelSvc;
-import xyz.util.UUIDUtil;
+import xyz.util.StringUtil;
 
 @Service
 public class BorrowModelSvcImp implements BorrowModelSvc {
@@ -25,7 +25,7 @@ public class BorrowModelSvcImp implements BorrowModelSvc {
 	@Override
 	public Map<String, Object> addBorrowModel(String amount, String baseAmount) {
 		BorrowModel borrowModel=new BorrowModel();
-		borrowModel.setNumberCode(UUIDUtil.getUUIDStringFor32());
+		borrowModel.setNumberCode(StringUtil.get_numberCode("BM"));
 		borrowModel.setAmount(new BigDecimal(amount));
 		borrowModel.setBaseAmount(new BigDecimal(baseAmount));
 		commonDao.save(borrowModel);

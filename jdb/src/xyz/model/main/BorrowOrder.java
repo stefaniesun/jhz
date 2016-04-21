@@ -40,6 +40,9 @@ public class BorrowOrder {
 	
 	@Column(name="charge")
 	private BigDecimal charge;
+	
+	@Column(name="borrow_account")
+	private String borrowAccount;
  	
 	@Column(name="add_date")
 	private Date addDate;
@@ -254,6 +257,14 @@ public class BorrowOrder {
 
 	public void setOverdueAmount(BigDecimal overdueAmount) {
 		this.overdueAmount = overdueAmount;
+	}
+
+	public String getBorrowAccount() {
+		return borrowAccount;
+	}
+
+	public void setBorrowAccount(String borrowAccount) {
+		this.borrowAccount = borrowAccount;
 	}
 
 

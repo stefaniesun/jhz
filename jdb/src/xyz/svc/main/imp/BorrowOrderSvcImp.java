@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import freemarker.ext.util.ModelFactory;
-import freemarker.template.utility.StringUtil;
 import xyz.dao.CommonDao;
 import xyz.filter.MyRequestUtil;
 import xyz.filter.ReturnUtil;
@@ -27,6 +26,7 @@ import xyz.model.main.MoneyFlow;
 import xyz.model.member.XyzSessionLogin;
 import xyz.svc.main.BorrowOrderSvp;
 import xyz.util.StringTool;
+import xyz.util.StringUtil;
 import xyz.util.UUIDUtil;
 
 @Service
@@ -53,7 +53,7 @@ public class BorrowOrderSvcImp implements BorrowOrderSvp {
 			   calendar.setTime(new Date()); 
 			   calendar.add(Calendar.DAY_OF_MONTH, cycle==1?8:15);
 				BorrowOrder borrowOrder=new BorrowOrder();
-				borrowOrder.setNumberCode(UUIDUtil.getUUIDStringFor32());
+				borrowOrder.setNumberCode(StringUtil.get_numberCode("BO"));
 				borrowOrder.setAddDate(new Date());
 				borrowOrder.setCycle(cycle);
 				borrowOrder.setNickName(customer.getNickName());

@@ -42,6 +42,17 @@ public class StringUtil {
 		return cClientCode;
 	}
 	
+	public static String get_numberCode(String type){
+		long curt = System.currentTimeMillis()/1000;
+		if(curt>product){
+			product=curt;
+		}else{
+			curt = ++product;
+		}
+		String cClientCode = type+Long.toString(curt, 36).toUpperCase();
+		return cClientCode;
+	}
+	
 	public static String getRandomStr(int scale){
 		String temp = "";
 		while(temp.length()<scale){

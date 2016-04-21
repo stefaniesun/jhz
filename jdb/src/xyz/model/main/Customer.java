@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -43,6 +44,9 @@ public class Customer {
 	
 	@Column(name="phone")
 	private String phone;
+	
+	@Column(name="check_flag")
+	private int checkFlag;
 	
 	@Column(name="card1_image")
 	private String card1Image;
@@ -83,6 +87,11 @@ public class Customer {
 	@Column(name="user_tag")
 	private String userTag;
 	
+	@Column(name="user_tag_name")
+	private String userTagName;
+	
+	@Transient
+	private int borrowCount;
 	
 	public String getIidd() {
 		return iidd;
@@ -203,6 +212,14 @@ public class Customer {
 		return userTag;
 	}
 
+	public int getBorrowCount() {
+		return borrowCount;
+	}
+
+	public void setBorrowCount(int borrowCount) {
+		this.borrowCount = borrowCount;
+	}
+
 	public void setUserTag(String userTag) {
 		this.userTag = userTag;
 	}
@@ -261,6 +278,22 @@ public class Customer {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public int getCheckFlag() {
+		return checkFlag;
+	}
+
+	public void setCheckFlag(int checkFlag) {
+		this.checkFlag = checkFlag;
+	}
+
+	public String getUserTagName() {
+		return userTagName;
+	}
+
+	public void setUserTagName(String userTagName) {
+		this.userTagName = userTagName;
 	}
 
 }

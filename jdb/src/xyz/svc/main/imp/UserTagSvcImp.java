@@ -14,6 +14,7 @@ import xyz.filter.ReturnUtil;
 import xyz.model.main.UserTag;
 import xyz.svc.main.UserTagSvc;
 import xyz.util.StringTool;
+import xyz.util.StringUtil;
 import xyz.util.UUIDUtil;
 @Service
 public class UserTagSvcImp implements UserTagSvc {
@@ -62,7 +63,7 @@ public class UserTagSvcImp implements UserTagSvc {
 	@Override
 	public Map<String, Object> addUserTag(String nameCn, int quota, int cycle) {
 		UserTag userTag=new UserTag();
-		userTag.setNumberCode(UUIDUtil.getUUIDStringFor32());
+		userTag.setNumberCode(StringUtil.get_numberCode("UT"));
 		userTag.setNameCn(nameCn);
 		userTag.setCycle(cycle);
 		userTag.setQuota(quota);

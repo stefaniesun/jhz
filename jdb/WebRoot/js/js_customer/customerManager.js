@@ -39,8 +39,8 @@ function initTable(){
 		height:'auto',
 		columns : [[
 		    {field:'checkboxTemp',checkbox:true},
-			{field:'username',title:'帐号',width:100},
-			{field:'nickName',title:'昵称',width:100},
+			{field:'nickName',title:'姓名',width:100},
+			{field:'username',title:'手机号',width:100},
 			{field:'account',title:'支付宝帐号',width:100},
 			{field:'enabled',title:'账户状态',
 				formatter : function(value,row,index){
@@ -58,6 +58,16 @@ function initTable(){
 					}
 				}
 			},
+			{field:'checkFlag',title:'是否审核',
+				formatter: function(value,row,index){
+					if(value=="0"){
+						return "否   <a href='javascript:void(0);' onclick='checkCusromer(\""+row.username+"\")'>审核</a>";
+					}else{
+						return "是";
+					}
+				}
+			},
+			{field:'borrowCount',title:'借款次数',width:100},
 			{field:'operTemp0',title:'用户等级',
 				formatter: function(value,row,index){
 					return "<a href='javascript:void(0);' onclick='setCustomerUserTag(\""+row.username+"\")'>设置</a>";
@@ -106,6 +116,25 @@ function loadTable(){
 	});
 }
 
+
+
+
+function checkCusromer(username){
+	xyzAjax({
+		url:"../CustomerWS/checkCusromerOper.do",
+		data:{
+			username:username
+		},
+		success:function(data){
+			if(data.status==1){
+				top.$.messager.alert("提示","操作成功","info");
+				$("#customerManagerTable").datagrid("reload");
+			}else{
+				top.$.messager.alert("警告",data.msg,"warning");
+			}
+		}
+	});
+}
 
 function editCustomerEnabled( iidd, enabled){
 	xyzAjax({
