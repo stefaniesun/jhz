@@ -20,15 +20,15 @@ public class BorrowModelWS {
 
 	@RequestMapping(value="addBorrowModel")
 	@ResponseBody
-	public Map<String, Object> addBorrowModel(String amount,String baseAmount){
-			return borrowModelSvc.addBorrowModel(amount, baseAmount);
+	public Map<String, Object> addBorrowModel(String amount,String baseAmount,String overdueAmount){
+			return borrowModelSvc.addBorrowModel(amount, baseAmount,overdueAmount);
 		}
 	
 	
 	@RequestMapping(value="editBorrowModel")
 	@ResponseBody
-	public Map<String, Object> editBorrowModel(String numberCode,String amount,String baseAmount){
-			return borrowModelSvc.editBorrowModel(numberCode,amount, baseAmount);
+	public Map<String, Object> editBorrowModel(String numberCode,String amount,String baseAmount,String overdueAmount){
+			return borrowModelSvc.editBorrowModel(numberCode,amount, baseAmount,overdueAmount);
 		}
 	
 	@RequestMapping(value="deleteBorrowModel")

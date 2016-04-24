@@ -87,6 +87,9 @@ public class Customer {
 	@Column(name="user_tag")
 	private String userTag;
 	
+	@Transient
+	private int quota;
+	
 	@Column(name="user_tag_name")
 	private String userTagName;
 	
@@ -201,6 +204,14 @@ public class Customer {
 
 	public String getNumberCode() {
 		return numberCode;
+	}
+
+	public int getQuota() {
+		return quota;
+	}
+
+	public void setQuota(int quota) {
+		this.quota = quota;
 	}
 
 	public void setNumberCode(String numberCode) {

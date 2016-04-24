@@ -29,6 +29,7 @@
 		<mapping class="xyz.model.main.BorrowModel"></mapping>
 		<mapping class="xyz.model.main.MoneyFlow"></mapping>
 		<mapping class="xyz.model.main.SystemConfig"></mapping>
+		<mapping class="xyz.model.main.Account"></mapping>
 	
 		<mapping class="xyz.model.member.XyzSessionLogin"></mapping>
 		

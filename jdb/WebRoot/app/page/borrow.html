@@ -100,7 +100,7 @@
 	</header>
 	<div class="mui-content borrow">
 		
-		<p class="hotel-tips">当前可借额度<span style="color:#f0ad4e">2000</span>元</p>
+		<p class="hotel-tips"></p>
 		
 		
 		<ul>
@@ -127,7 +127,11 @@
 		
 		<div class="mui-content-padded">
 				<button id="borrowSave" type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">提交</button>
-			</div>
+		</div>
+		
+		<div class="mui-content-padded" style="display:none">
+				<button id="back" type="button" class="mui-btn mui-btn-block mui-btn-warning hotel-btn-main">返回</button>
+		</div>
 		
 	</div>
 	<script src="../js/mui_20151228.min.js"></script>
@@ -144,14 +148,49 @@
 	
 	
 	var rows;
+	
+	
+	var	localLoginInfo = xyz.isNull(window.localStorage.localLoginInfo)?false:JSON.parse(window.localStorage.localLoginInfo);
+	
+	
 	xyz.ajax({
-		url:'BorrowModelWS/getAllBorrowModel.cus',
+		url:'CustomerWS/getCustomer.cus',
 		data:{
-			apikey:window.localStorage.apikey
+			apikey:window.localStorage.apikey,
+			username:localLoginInfo.username
 		},
 		success:function(data){
 			if(data.status==1){
-				rows=data.content;
+				console.log(data);
+				if(data.content.checkFlag==0){
+					xyz.class(".hotel-tips").innerHTML="请先完善个人信息";
+					xyz.id("borrowSave").style.display="none";
+					xyz.id("back").style.display="block";
+				}else{
+					xyz.class(".hotel-tips").innerHTML="当前借款额度"+data.content.quota+"元";
+					xyz.ajax({
+						url:'BorrowModelWS/getAllBorrowModel.cus',
+						data:{
+							apikey:window.localStorage.apikey
+						},
+						success:function(data){
+							if(data.status==1){
+								rows=data.content;
+							}else{
+								if(data.msg.indexOf('重新登录')>-1){
+									if(window.plus){
+										var loginWebview = plus.webview.getWebviewById('page/login.html');
+										loginWebview.evalJS('webviewId="";method=""');
+										loginWebview.show("slide-in-right", 300);
+									}
+								}else{
+									plus.nativeUI.alert(data.msg);
+								}
+							}
+						}
+					});
+				}
+				
 			}else{
 				if(data.msg.indexOf('重新登录')>-1){
 					if(window.plus){
@@ -165,6 +204,13 @@
 			}
 		}
 	});
+	
+	
+	
+	
+	
+	
+	
 
 	
 

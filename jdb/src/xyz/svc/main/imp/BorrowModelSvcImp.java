@@ -23,23 +23,17 @@ public class BorrowModelSvcImp implements BorrowModelSvc {
 	CommonDao commonDao;
 	
 	@Override
-	public Map<String, Object> addBorrowModel(String amount, String baseAmount) {
+	public Map<String, Object> addBorrowModel(String amount, String baseAmount,String overdueAmount) {
 		BorrowModel borrowModel=new BorrowModel();
 		borrowModel.setNumberCode(StringUtil.get_numberCode("BM"));
 		borrowModel.setAmount(new BigDecimal(amount));
 		borrowModel.setBaseAmount(new BigDecimal(baseAmount));
+		borrowModel.setOverdueAmount(new BigDecimal(overdueAmount));
 		commonDao.save(borrowModel);
 		return ReturnUtil.returnMap(1,null);
 	}
 
-	@Override
-	public Map<String, Object> editBorrowModel(String numberCode, String amount, String baseAmount) {
-		BorrowModel borrowModel=(BorrowModel) commonDao.getObjectByUniqueCode("BorrowModel", "numberCode", numberCode);
-		borrowModel.setAmount(new BigDecimal(amount));
-		borrowModel.setBaseAmount(new BigDecimal(baseAmount));
-		commonDao.update(borrowModel);
-		return ReturnUtil.returnMap(1,null);
-	}
+
 
 	@Override
 	public Map<String, Object> deleteBorrowModel(String numberCode) {
@@ -77,6 +71,17 @@ public class BorrowModelSvcImp implements BorrowModelSvc {
 		@SuppressWarnings("unchecked")
 		List<BorrowModel> models=commonDao.queryByHql(hql);
 		return ReturnUtil.returnMap(1, models);
+	}
+
+	@Override
+	public Map<String, Object> editBorrowModel(String numberCode, String amount, String baseAmount,
+			String overdueAmount) {
+		BorrowModel borrowModel=(BorrowModel) commonDao.getObjectByUniqueCode("BorrowModel", "numberCode", numberCode);
+		borrowModel.setAmount(new BigDecimal(amount));
+		borrowModel.setBaseAmount(new BigDecimal(baseAmount));
+		borrowModel.setOverdueAmount(new BigDecimal(overdueAmount));
+		commonDao.update(borrowModel);
+		return ReturnUtil.returnMap(1,null);
 	}
 
 }

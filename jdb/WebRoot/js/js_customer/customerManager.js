@@ -39,7 +39,7 @@ function initTable(){
 		height:'auto',
 		columns : [[
 		    {field:'checkboxTemp',checkbox:true},
-			{field:'nickName',title:'姓名',width:100},
+			{field:'nickName',title:'姓名',width:80},
 			{field:'username',title:'手机号',width:100},
 			{field:'account',title:'支付宝帐号',width:100},
 			{field:'enabled',title:'账户状态',
@@ -58,16 +58,16 @@ function initTable(){
 					}
 				}
 			},
-			{field:'checkFlag',title:'是否审核',
+			{field:'checkFlag',title:'审核',
 				formatter: function(value,row,index){
 					if(value=="0"){
-						return "否   <a href='javascript:void(0);' onclick='checkCusromer(\""+row.username+"\")'>审核</a>";
+						return "<a href='javascript:void(0);' onclick='checkCusromer(\""+row.username+"\")'>审核</a>";
 					}else{
-						return "是";
+						return "<span style='color:#11cd6e'>已审核</span>";
 					}
 				}
 			},
-			{field:'borrowCount',title:'借款次数',width:100},
+			{field:'borrowCount',title:'借款次数',width:70},
 			{field:'operTemp0',title:'用户等级',
 				formatter: function(value,row,index){
 					return "<a href='javascript:void(0);' onclick='setCustomerUserTag(\""+row.username+"\")'>设置</a>";
@@ -121,7 +121,7 @@ function loadTable(){
 
 function checkCusromer(username){
 	xyzAjax({
-		url:"../CustomerWS/checkCusromerOper.do",
+		url:"../CustomerWS/checkCustomerOper.do",
 		data:{
 			username:username
 		},

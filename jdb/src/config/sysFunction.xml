@@ -73,7 +73,7 @@
 		<api flagServer="0" isWork="0" buttonCode="buttonCode_w20160317101903" nameCn="查询客户位选中标签" url="/CustomerWS/queryCustomerUserTagFalseList.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101904" nameCn="添加标签进组" url="/CustomerWS/addCustomerUserTag.do"/>
 		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101905" nameCn="删除组内标签" url="/CustomerWS/deleteCustomerUserTag.do"/>
-		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101906" nameCn="审核用户信息" url="/CustomerWS/checkCusromerOper.do"/>
+		<api flagServer="0" isWork="1" buttonCode="buttonCode_w20160317101906" nameCn="审核用户信息" url="/CustomerWS/checkCustomerOper.do"/>
 		
 	</function>
 	

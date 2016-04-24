@@ -28,6 +28,9 @@ public class BorrowModel {
 	
 	@Column(name="base_amount")
 	private BigDecimal baseAmount;
+	
+	@Column(name="overdue_amount")
+	private BigDecimal overdueAmount;
 
 	public String getIidd() {
 		return iidd;
@@ -59,5 +62,13 @@ public class BorrowModel {
 
 	public void setBaseAmount(BigDecimal baseAmount) {
 		this.baseAmount = baseAmount;
+	}
+
+	public BigDecimal getOverdueAmount() {
+		return overdueAmount;
+	}
+
+	public void setOverdueAmount(BigDecimal overdueAmount) {
+		this.overdueAmount = overdueAmount;
 	}
 }

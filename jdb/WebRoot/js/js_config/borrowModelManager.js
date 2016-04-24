@@ -51,7 +51,8 @@ function initTable(){
 		    {field:'checkboxTemp',checkbox:true},
 			{field:'iidd',title:'标签编号',hidden:true},
 			{field:'amount',title:'借款金额',width:100},
-			{field:'baseAmount',title:'基数金额',width:100}
+			{field:'baseAmount',title:'基数金额',width:100},
+			{field:'overdueAmount',title:'逾期基数金额',width:100}
 		]]
 	});
 }
@@ -79,6 +80,14 @@ function addBorrowModelButton(title){
 	 contentHtml += "</td>";
 	 contentHtml += "<td>";
 	 contentHtml += "<input type='text' id='baseAmountForm' style='width:400px;' />";
+	 contentHtml += "</td>";
+	 contentHtml += "</tr>";
+	 contentHtml += "<tr>";
+	 contentHtml += "<td align='right'>";
+	 contentHtml += "逾期基数金额 ： &nbsp";
+	 contentHtml += "</td>";
+	 contentHtml += "<td>";
+	 contentHtml += "<input type='text' id='overdueAmountForm' style='width:400px;' />";
 	 contentHtml += "</td>";
 	 contentHtml += "</tr>";
 	 contentHtml += "</table>";
@@ -160,6 +169,7 @@ function editUserTagButton(title){
 function addBorrowModelSubmit(target){
 	var amount=$("#amountForm").val();
 	var baseAmount=$("#baseAmountForm").val();
+	var overdueAmount=$("#overdueAmountForm").val();
 	
 	if(!$("form").form('validate')){
 		return;
@@ -169,7 +179,8 @@ function addBorrowModelSubmit(target){
 		url:"../BorrowModelWS/addBorrowModel.do",
 		data:{
 			amount:amount,
-			baseAmount:baseAmount
+			baseAmount:baseAmount,
+			overdueAmount:overdueAmount
 		},
 		success:function(data){
 			if(data.status==1){

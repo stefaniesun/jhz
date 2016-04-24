@@ -380,6 +380,10 @@ public class CustomerSvcImp implements CustomerSvc {
 		if(customer==null){
 			return ReturnUtil.returnMap(0,"客户不存在");
 		}
+		
+		UserTag userTag=(UserTag) commonDao.getObjectByUniqueCode("UserTag", "numberCode", customer.getUserTag());
+		customer.setQuota(userTag.getQuota());
+		
 		return ReturnUtil.returnMap(1,customer);
 	}
 
